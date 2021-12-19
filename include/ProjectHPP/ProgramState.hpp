@@ -5,7 +5,7 @@
 class ProgramState : public State
 {
 private:
-    
+    Entity player;
 public:
     ProgramState(sf::RenderWindow* window_);
     ~ProgramState();

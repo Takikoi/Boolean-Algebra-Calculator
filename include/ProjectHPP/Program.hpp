@@ -13,7 +13,7 @@ private:
     sf::Event ev;
     sf::Clock dtClock;
 
-    float dtTime = 0.f;                               // delta time 
+    float dtTime = 0.f;                         // delta time 
     void initWindow();
     void initStates();
 

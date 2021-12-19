@@ -3,6 +3,8 @@
 #include "SYSTEM_modules.hpp"
 #include "SFML_modules.hpp"
 
+#include "Entity.hpp" 
+
 class State
 {
 private:

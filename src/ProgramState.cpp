@@ -14,16 +14,13 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
 void ProgramState::update(const float& dtTime_)
 {
     updateKeyBinds(dtTime_);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        std::cout << "A\n";
-    }
+    player.update(dtTime_);
     
 }
 
 void ProgramState::render(sf::RenderTarget* target_)
 {
-
+    player.render(target_);
 }
 
 // ######################################################################## (Program functions)
