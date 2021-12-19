@@ -4,7 +4,7 @@
     "UEIntellisenseFixes.enableOptionalFixes": false,
     "code-runner.runInTerminal": true,
     "C_Cpp.updateChannel": "Insiders",
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0.5,
     "workbench.colorTheme": "GitHub Dark High Contrast",
     "files.associations": {
         "array": "cpp",

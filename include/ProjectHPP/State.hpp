@@ -5,7 +5,7 @@
 
 class State
 {
-protected:
+private:
     sf::RenderWindow* window;
     std::vector<sf::Texture> textures;  // it's an array.....so plural
 
@@ -15,7 +15,7 @@ public:
 
     virtual void endState() = 0;
     virtual void update(const float& dtTime_) = 0;
-    virtual void render(sf::RenderTarget* target_) = 0;
+    virtual void render(sf::RenderTarget* target_ = nullptr) = 0;
 
     /* These are "pure virtual fuction" declaration
     * having them = 0 to specify them as a pure virtual functions
@@ -23,4 +23,3 @@ public:
     * they are meant to be polymorphed in the inheritants
     */
 };
-

@@ -13,7 +13,7 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
 
 void ProgramState::update(const float& dtTime_)
 {
-    std::cout << "yello\n";
+
 }
 
 void ProgramState::render(sf::RenderTarget* target_)

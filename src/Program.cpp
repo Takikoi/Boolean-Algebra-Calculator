@@ -3,19 +3,22 @@
 
 // ######################################################################## (Constructors & Init)
 
-void Program::initVariables()
+void Program::initWindow()
 {
+    // Create window
     vidmode = sf::VideoMode(1080, 720);
-    dtTime = 0.f;
+    window = new sf::RenderWindow(vidmode, "Boolean Algebra Calculator 1.0", sf::Style::Close | sf::Style::Titlebar);
+    window->setFramerateLimit(60);
 }
 void Program::initStates()
 {
-    states.push(new ProgramState(window));
+    states.push(new ProgramState(nullptr));
 }
 
-Program::~Program() {
+Program::~Program() 
+{
     delete window;
-    for (int i = 0; i < states.size(); ++i)
+    while (!states.empty())
     {
         // delete allocated memory of each state pointer
         delete states.top();
@@ -23,18 +26,13 @@ Program::~Program() {
         // empty out all state pointers from stack
         states.pop();
     }
-    
 }
 
 Program::Program()
 {
     // Init functions
-    initVariables();
+    initWindow();
     initStates();
-
-    // Create window
-    window->create(vidmode, "Boolean Algebra Calculator 1.0", sf::Style::Close | sf::Style::Titlebar);
-    window->setFramerateLimit(60);
 }
 
 // ######################################################################## (Main Update & Render)
@@ -60,7 +58,6 @@ void Program::render()
     {
         states.top()->render(window);
     }
-    
 
     window->display();
 }
@@ -92,7 +89,6 @@ void Program::pollEvent()
 void Program::updateDtTime() 
 { 
     // get the time taken to complete 1 loop of update & render
-
     dtTime = dtClock.restart().asSeconds();
     system("cls");
     std::cout << "Delta Time: " << dtTime << std::endl;
