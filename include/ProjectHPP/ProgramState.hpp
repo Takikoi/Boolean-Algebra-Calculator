@@ -10,6 +10,7 @@ public:
     ProgramState(sf::RenderWindow* window_);
     ~ProgramState();
 
+    void updateKeyBinds(const float& dtTime_);
     void endState();
 
     void update(const float& dtTime_);

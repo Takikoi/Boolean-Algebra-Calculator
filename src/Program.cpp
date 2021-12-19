@@ -17,6 +17,7 @@ void Program::initStates()
 
 Program::~Program() 
 {
+    window->close();
     delete window;
     while (!states.empty())
     {
@@ -45,6 +46,18 @@ void Program::update()
     if (!states.empty())
     {
         states.top()->update(dtTime);
+
+        if (states.top()->getQuit())
+        {
+            states.top()->endState();
+            delete states.top();
+            states.pop();
+        }
+        
+    }
+    else 
+    {
+        window->close();
     }
     
 }
@@ -90,7 +103,7 @@ void Program::updateDtTime()
 { 
     // get the time taken to complete 1 loop of update & render
     dtTime = dtClock.restart().asSeconds();
-    system("cls");
-    std::cout << "Delta Time: " << dtTime << std::endl;
+    //system("cls");
+    //std::cout << "Delta Time: " << dtTime << std::endl;
     
 }

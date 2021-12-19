@@ -8,12 +8,17 @@ class State
 private:
     sf::RenderWindow* window;
     std::vector<sf::Texture> textures;  // it's an array.....so plural
+    bool quit;
 
 public:
     State(sf::RenderWindow* window_);
     virtual ~State();
 
+    virtual void checkForQuit();
+    const bool& getQuit() const;
+
     virtual void endState() = 0;
+    virtual void updateKeyBinds(const float& dtTime_) = 0;
     virtual void update(const float& dtTime_) = 0;
     virtual void render(sf::RenderTarget* target_ = nullptr) = 0;
 
