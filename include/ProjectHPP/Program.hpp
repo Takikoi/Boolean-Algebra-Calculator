@@ -10,7 +10,9 @@ class Program
 private:
     // Core
     std::string title;
+    int FPS = 60;
     sf::VideoMode windowBounds;                 // window dimension
+    sf::VideoMode screenBounds;
     sf::RenderWindow* window;
     sf::Event ev;
     sf::Clock dtClock;
@@ -29,6 +31,8 @@ private:
 public:
     Program();
     ~Program();
+
+    void info() const;
 
     const bool running() const;
     void updateWindowPos();

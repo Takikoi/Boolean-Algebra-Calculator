@@ -6,9 +6,10 @@
 void Program::initWindow()
 {
     title = "Boolean Algebra Calculator 1.0";
-    windowBounds = sf::VideoMode(1080, 720);
+    windowBounds = sf::VideoMode(1800, 900);
     window = new sf::RenderWindow(windowBounds, title, sf::Style::Close | sf::Style::Titlebar);
-    window->setFramerateLimit(60);
+    window->setFramerateLimit(FPS);
+    screenBounds = sf::VideoMode::getDesktopMode();
 }
 
 void Program::initStates()
@@ -44,6 +45,8 @@ Program::Program()
     initWindow();
     initKeys();
     initStates();
+
+    info();
 }
 
 // ######################################################################## (Main Update & Render)
@@ -91,6 +94,15 @@ void Program::render()
 
 // ######################################################################## (Program functions)
 
+void Program::info() const {
+    using namespace std;
+    cout << "========== " << title << " ==========" << endl;
+    cout << "[Screen Resolution] : " << screenBounds.width << " x " << screenBounds.height << endl;
+    cout << "[Window Dimensions] : " << windowBounds.width << " x " << windowBounds.height << endl;
+    cout << "[Program FPS]       : " << FPS << endl;
+    cout << "[VSYNC enabled]     : false " << endl;
+}
+
 const bool Program::running() const {
     return window->isOpen();
 }
@@ -133,8 +145,9 @@ void Program::updateMousePos() {
         mousePos.y = 0;
 
     using namespace std;
-    cout << "Mouse pos: " << setw(4) << left << mousePos.x << ", " << setw(4) << left <<  mousePos.y << "____ " 
-    << "Win pos: " << setw(4) << left << windowPos.x << ", " << setw(4) << left <<  windowPos.y << endl;
+    // cout << "Mouse pos: " << setw(4) << left << mousePos.x << ", " << setw(4) << left <<  mousePos.y << "____ " 
+    //      << "Win pos: " << setw(4) << left << windowPos.x << ", " << setw(4) << left <<  windowPos.y << "____ " 
+    //      << "Screen size: " << setw(4) << left << screenBounds.width << ", " << setw(4) << left <<  screenBounds.height << endl;
 }
 
 const sf::Vector2i& Program::getWindowPos() const {
