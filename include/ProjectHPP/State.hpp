@@ -19,12 +19,11 @@ public:
     virtual ~State();
 
     void checkForQuit();
-    void updateMousePos();
+    virtual void updateMousePos();
     const bool& getQuit() const;
 
-    virtual void endState() = 0;
-    virtual void updateInput(const float& dtTime_) = 0;
-    virtual void update(const float& dtTime_) = 0;
+    virtual void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;
+    virtual void update(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;
     virtual void render(sf::RenderTarget* target_ = NULL) = 0;
 
     /* These are "pure virtual fuction" declaration

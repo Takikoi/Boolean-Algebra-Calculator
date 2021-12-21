@@ -12,7 +12,7 @@ private:
     std::string title;
     int FPS = 60;
     sf::VideoMode windowBounds;                 // window dimension
-    sf::VideoMode screenBounds;
+    sf::VideoMode screenBounds;                 // screen resolution
     sf::RenderWindow* window;
     sf::Event ev;
     sf::Clock dtClock;
@@ -21,12 +21,10 @@ private:
     sf::Vector2i windowPos;
     sf::Vector2i mousePos;
 
-    std::stack<State*> states;                  // cannot create objects of abstract class, but pointer instead
-    std::map<std::string,  int> supportedKeys; 
+    ProgramState* programState;                  // cannot create objects of abstract class, but pointer instead
 
     void initWindow();
     void initStates();
-    void initKeys();
 
 public:
     Program();

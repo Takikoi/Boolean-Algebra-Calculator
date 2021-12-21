@@ -25,5 +25,5 @@ const bool& State::getQuit() const {
 
 void State::updateMousePos()
 {
-    mousePos = sf::Mouse::getPosition();
+    
 }

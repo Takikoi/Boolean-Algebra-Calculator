@@ -6,25 +6,43 @@ Entity::~Entity()
 
 Entity::Entity()
 {
-    rec.setSize(sf::Vector2f(50.f, 50.f));
-    rec.setFillColor(sf::Color::Green);
+    boundBox.setPosition(100, 100);
+    boundBox.setSize(sf::Vector2f(150.f, 150.f));
+    boundBox.setFillColor(sf::Color::Green);
 }
 
 // ######################################################################## (Main Update & Render)
 
-void Entity::update(const float& dtTime_)
+void Entity::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
-    
+    updateInput(dtTime_, mousePos_);
 }
 
 void Entity::render(sf::RenderTarget* target_)
 {
-    target_->draw(rec);
+    target_->draw(boundBox);
 }
 
 // ######################################################################## (Program functions)
 
 void Entity::move(const float dtTime_, const sf::Vector2f dir_)
 {
-    rec.move(dir_.x * movementSpeed * dtTime_, dir_.y * movementSpeed * dtTime_);
+    
+}
+
+void Entity::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
+{
+    mousePos = mousePos_;
+    std::cout << checkMouseCollision() << std::endl;
+
+}
+
+bool Entity::checkMouseCollision()
+{
+    if ((float)mousePos.x >= boundBox.getPosition().x && (float)mousePos.x <= (boundBox.getPosition().x + boundBox.getSize().x)
+     && (float)mousePos.y >= boundBox.getPosition().y && (float)mousePos.y <= (boundBox.getPosition().y + boundBox.getSize().y))
+    {
+        return true;
+    }
+    else return false;
 }

@@ -6,7 +6,7 @@
 void Program::initWindow()
 {
     title = "Boolean Algebra Calculator 1.0";
-    windowBounds = sf::VideoMode(1800, 900);
+    windowBounds = sf::VideoMode(1500, 800);
     window = new sf::RenderWindow(windowBounds, title, sf::Style::Close | sf::Style::Titlebar);
     window->setFramerateLimit(FPS);
     screenBounds = sf::VideoMode::getDesktopMode();
@@ -14,36 +14,20 @@ void Program::initWindow()
 
 void Program::initStates()
 {
-    states.push(new ProgramState(window));
-}
-
-void Program::initKeys()
-{
-    supportedKeys.emplace("A", sf::Keyboard::A);
-    supportedKeys.emplace("D", sf::Keyboard::D);
-    supportedKeys.emplace("W", sf::Keyboard::W);
-    supportedKeys.emplace("S", sf::Keyboard::S);
+    programState = new ProgramState(window);
 }
 
 Program::~Program() 
 {
     // No need to call window->close(), bc it's already out of the isOpen() loop
     delete window;
-    while (!states.empty())
-    {
-        // delete allocated memory of each state pointer
-        delete states.top();
-
-        // empty out all state pointers from stack
-        states.pop();
-    }
+    delete programState;
 }
 
 Program::Program()
 {
     // Init functions
     initWindow();
-    initKeys();
     initStates();
 
     info();
@@ -60,22 +44,7 @@ void Program::update()
     updateWindowPos();
     updateMousePos();
 
-    if (!states.empty())
-    {
-        states.top()->update(dtTime);
-
-        if (states.top()->getQuit())
-        {
-            states.top()->endState();
-            delete states.top();
-            states.pop();
-        }
-        
-    }
-    else 
-    {
-        window->close();
-    }
+    programState->update(dtTime, mousePos);
     
 }
 
@@ -84,10 +53,7 @@ void Program::render()
     window->clear(sf::Color::Black);
 
     // Render Objects
-    if (!states.empty())
-    {
-        states.top()->render(window);
-    }
+    programState->render(window);
 
     window->display();
 }
@@ -136,7 +102,8 @@ void Program::updateWindowPos() {
 void Program::updateMousePos() {
     // Set the cursor origin to the position of the window relative to the screen
     mousePos = sf::Mouse::getPosition();
-    mousePos -= windowPos;
+    mousePos.x -= windowPos.x;
+    mousePos.y -= (windowPos.y + 34.f);
 
     if (mousePos.x < 0)
         mousePos.x = 0;
