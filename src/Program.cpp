@@ -5,19 +5,28 @@
 
 void Program::initWindow()
 {
-    // Create window
-    vidmode = sf::VideoMode(1080, 720);
-    window = new sf::RenderWindow(vidmode, "Boolean Algebra Calculator 1.0", sf::Style::Close | sf::Style::Titlebar);
+    title = "Boolean Algebra Calculator 1.0";
+    windowBounds = sf::VideoMode(1080, 720);
+    window = new sf::RenderWindow(windowBounds, title, sf::Style::Close | sf::Style::Titlebar);
     window->setFramerateLimit(60);
 }
+
 void Program::initStates()
 {
-    states.push(new ProgramState(nullptr));
+    states.push(new ProgramState(window));
+}
+
+void Program::initKeys()
+{
+    supportedKeys.emplace("A", sf::Keyboard::A);
+    supportedKeys.emplace("D", sf::Keyboard::D);
+    supportedKeys.emplace("W", sf::Keyboard::W);
+    supportedKeys.emplace("S", sf::Keyboard::S);
 }
 
 Program::~Program() 
 {
-    window->close();
+    // No need to call window->close(), bc it's already out of the isOpen() loop
     delete window;
     while (!states.empty())
     {
@@ -33,6 +42,7 @@ Program::Program()
 {
     // Init functions
     initWindow();
+    initKeys();
     initStates();
 }
 
@@ -40,8 +50,12 @@ Program::Program()
 
 void Program::update()
 {
+    // Get loop elapsed time
     updateDtTime();
-    pollEvent();
+    // Get input from user
+    pollProgramEvent();
+    updateWindowPos();
+    updateMousePos();
 
     if (!states.empty())
     {
@@ -81,7 +95,7 @@ const bool Program::running() const {
     return window->isOpen();
 }
 
-void Program::pollEvent()
+void Program::pollProgramEvent()
 {
     while (window->pollEvent(ev))
     {
@@ -89,11 +103,6 @@ void Program::pollEvent()
         {
         case sf::Event::Closed:
             window->close();
-            break;
-        
-        case sf::Event::KeyPressed:
-            if (ev.key.code == sf::Keyboard::Escape)
-                window->close();
             break;
         }
     }
@@ -106,4 +115,32 @@ void Program::updateDtTime()
     //system("cls");
     //std::cout << "Delta Time: " << dtTime << std::endl;
     
+}
+
+void Program::updateWindowPos() {
+    windowPos = window->getPosition();
+}
+
+void Program::updateMousePos() {
+    // Set the cursor origin to the position of the window relative to the screen
+    mousePos = sf::Mouse::getPosition();
+    mousePos -= windowPos;
+
+    if (mousePos.x < 0)
+        mousePos.x = 0;
+
+    if (mousePos.y < 0)
+        mousePos.y = 0;
+
+    using namespace std;
+    cout << "Mouse pos: " << setw(4) << left << mousePos.x << ", " << setw(4) << left <<  mousePos.y << "____ " 
+    << "Win pos: " << setw(4) << left << windowPos.x << ", " << setw(4) << left <<  windowPos.y << endl;
+}
+
+const sf::Vector2i& Program::getWindowPos() const {
+    return windowPos;
+}
+
+const sf::Vector2i& Program::getMousePos() const {
+    return mousePos;
 }

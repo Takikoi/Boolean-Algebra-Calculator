@@ -7,22 +7,25 @@
 
 class State
 {
-private:
+protected:
     sf::RenderWindow* window;
-    std::vector<sf::Texture> textures;  // it's an array.....so plural
+    std::vector<sf::Texture> backgrounds;
+    sf::Vector2i mousePos;
+
     bool quit;
 
 public:
     State(sf::RenderWindow* window_);
     virtual ~State();
 
-    virtual void checkForQuit();
+    void checkForQuit();
+    void updateMousePos();
     const bool& getQuit() const;
 
     virtual void endState() = 0;
-    virtual void updateKeyBinds(const float& dtTime_) = 0;
+    virtual void updateInput(const float& dtTime_) = 0;
     virtual void update(const float& dtTime_) = 0;
-    virtual void render(sf::RenderTarget* target_ = nullptr) = 0;
+    virtual void render(sf::RenderTarget* target_ = NULL) = 0;
 
     /* These are "pure virtual fuction" declaration
     * having them = 0 to specify them as a pure virtual functions

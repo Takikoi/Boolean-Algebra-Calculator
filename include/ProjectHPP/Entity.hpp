@@ -5,16 +5,17 @@
 
 class Entity
 {
-private:
 protected:
     sf::RectangleShape rec;
-    const float movementSpeed = 100;;
+    sf::Sprite sprite;
+    const float movementSpeed = 100;
+    
 public:
     Entity();
     ~Entity();
 
     virtual void move(const float dtTime_, const sf::Vector2f dir);
     virtual void update(const float& dtTime_);
-    virtual void render(sf::RenderTarget* target_ = nullptr);
+    virtual void render(sf::RenderTarget* target_ = NULL);
 };
 

@@ -14,11 +14,16 @@ void State::checkForQuit()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
-        quit = true;
+        //quit = true;
     }
     
 }
 
 const bool& State::getQuit() const {
     return quit;
+}
+
+void State::updateMousePos()
+{
+    mousePos = sf::Mouse::getPosition();
 }
