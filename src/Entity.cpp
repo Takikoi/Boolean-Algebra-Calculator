@@ -16,6 +16,7 @@ Entity::Entity()
 void Entity::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     updateInput(dtTime_, mousePos_);
+    updatePos(mousePos_);
 }
 
 void Entity::render(sf::RenderTarget* target_)
@@ -33,8 +34,7 @@ void Entity::move(const float dtTime_, const sf::Vector2f dir_)
 void Entity::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     mousePos = mousePos_;
-    std::cout << checkMouseCollision() << std::endl;
-
+    //std::cout << checkMouseCollision() << std::endl;
 }
 
 bool Entity::checkMouseCollision()
@@ -45,4 +45,21 @@ bool Entity::checkMouseCollision()
         return true;
     }
     else return false;
+}
+
+void Entity::updatePos(const sf::Vector2i& mousePos_)
+{
+    static bool clicked = false;
+    sf::Vector2f offset;
+    if (checkMouseCollision())
+    {
+        if (!clicked)
+            offset = (sf::Vector2f)mousePos_ - boundBox.getPosition();
+        
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            clicked = true;
+            boundBox.setPosition((sf::Vector2f)mousePos_ - offset);
+        }
+    }
 }
