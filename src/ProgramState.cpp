@@ -1,13 +1,24 @@
 #include "ProgramState.hpp"
 
-ProgramState::~ProgramState()
+void ProgramState::initCells()
 {
-    delete window;
+    int f = 0;
+    for (size_t i = 0; i < NUM_CELLS; i++)
+    {
+        cells.push_back(Cell(sf::Vector2f(f, 0.f)));
+        f += 125;
+    }
+    
 }
 
-ProgramState::ProgramState(sf::RenderWindow* window_) 
-    : State(window_)
+ProgramState::~ProgramState()
 {
+}
+
+ProgramState::ProgramState() 
+    : State()
+{
+    initCells();
 }
 
 // ######################################################################## (Main Update & Render)
@@ -15,14 +26,18 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
 void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     updateInput(dtTime_, mousePos_);
-    logicGate.update(dtTime_, mousePos_);
+    
+
 }
 
 void ProgramState::render(sf::RenderTarget* target_)
 {
-    if (!target_)
-        target_ = window;
-    logicGate.render(target_);
+    
+    for (Cell& iter : cells)
+    {
+        iter.render(target_);
+    }
+
 }
 
 // ######################################################################## (Program functions)

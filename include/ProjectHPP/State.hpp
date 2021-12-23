@@ -8,14 +8,13 @@
 class State
 {
 protected:
-    sf::RenderWindow* window;
     std::vector<sf::Texture> backgrounds;
     sf::Vector2i mousePos;
 
     bool quit;
 
 public:
-    State(sf::RenderWindow* window_);
+    State();
     virtual ~State();
 
     void checkForQuit();

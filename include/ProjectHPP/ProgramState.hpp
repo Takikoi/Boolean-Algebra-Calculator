@@ -1,20 +1,20 @@
 #pragma once
 
 #include "State.hpp"
+#include "Cell.hpp"
 
 class ProgramState : public State
 {
 private:
-    Entity logicGate;
+    std::vector<Cell> cells;
 
+    void initCells();
 protected:
-    // sf::RenderWindow* window;
     // std::vector<sf::Texture> textures;
     // bool quit;
 
 public:
-    // State(sf::RenderWindow* window_);
-    ProgramState(sf::RenderWindow* window_);
+    ProgramState();
     ~ProgramState();
 
     void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);

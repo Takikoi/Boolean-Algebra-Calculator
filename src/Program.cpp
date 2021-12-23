@@ -6,7 +6,7 @@
 void Program::initWindow()
 {
     title = "Boolean Algebra Calculator 1.0";
-    windowBounds = sf::VideoMode(1500, 800);
+    windowBounds = sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT);
     window = new sf::RenderWindow(windowBounds, title, sf::Style::Close | sf::Style::Titlebar);
     window->setFramerateLimit(FPS);
     screenBounds = sf::VideoMode::getDesktopMode();
@@ -14,7 +14,7 @@ void Program::initWindow()
 
 void Program::initStates()
 {
-    programState = new ProgramState(window);
+    programState = new ProgramState;
 }
 
 Program::~Program() 
@@ -50,7 +50,7 @@ void Program::update()
 
 void Program::render()
 {
-    window->clear(sf::Color::Black);
+    window->clear(sf::Color::White);
 
     // Render Objects
     programState->render(window);

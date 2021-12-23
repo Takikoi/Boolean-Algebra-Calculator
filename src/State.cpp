@@ -2,21 +2,14 @@
 
 State::~State()
 {
-    delete window;
 }
 
-State::State(sf::RenderWindow* window_)
+State::State()
 {
-    window = window_;
 }
 
 void State::checkForQuit()
-{
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-    {
-        //quit = true;
-    }
-    
+{    
 }
 
 const bool& State::getQuit() const {
@@ -25,6 +18,5 @@ const bool& State::getQuit() const {
 
 void State::updateMousePos()
 {
-    
 }
 
