@@ -50,7 +50,7 @@ void Program::update()
 
 void Program::render()
 {
-    window->clear(sf::Color::White);
+    window->clear(sf::Color::Black);
 
     // Render Objects
     programState->render(window);

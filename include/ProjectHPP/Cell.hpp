@@ -7,13 +7,19 @@ class Cell
 {
 private:
     sf::RectangleShape rec;
-    std::vector<sf::Sprite> sprites;
+    sf::Texture textureSheet;
+    sf::Sprite sprites;
 
     void initVariables();
+    void initTexture();
+    void initSprites();
 public:
+    Cell();
     Cell(const sf::Vector2f& pos_);
     ~Cell();
     
+    void setColor(sf::Color color_);
+
     void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);
     void updateMousePos(const sf::Vector2i& mousePos_);
 

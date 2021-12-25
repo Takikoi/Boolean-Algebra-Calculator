@@ -10,3 +10,4 @@
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 extern int NUM_CELLS;
+extern int CELL_SIZE;

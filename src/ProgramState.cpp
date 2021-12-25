@@ -2,17 +2,39 @@
 
 void ProgramState::initCells()
 {
-    int f = 0;
-    for (size_t i = 0; i < NUM_CELLS; i++)
+    // Allocate cells
+    cells = new Cell** [NUM_CELLS];
+    for (short i = 0; i < NUM_CELLS; ++i)
+        cells[i] = new Cell*[NUM_CELLS];
+
+    // Init Cells field
+    short x(0), y(0);
+    for (short i = 0; i < NUM_CELLS; ++i)
     {
-        cells.push_back(Cell(sf::Vector2f(f, 0.f)));
-        f += 125;
+        for (short j = 0; j < NUM_CELLS; ++j)
+        {
+            cells[i][j] = new Cell(sf::Vector2f(x, y));
+            x += CELL_SIZE;
+        }
+        x = 0;
+        y += CELL_SIZE;
     }
-    
+    //cells[0][0] = Cell(sf::Vector2f(0, 0));
+
+    // textureSheet.loadFromFile("../assets/t2.png");
+    // sprites.setTexture(textureSheet);
+    //foo = Cell(sf::Vector2f(0, 0), &textureSheet);
 }
 
 ProgramState::~ProgramState()
 {
+    for (short i = 0; i < NUM_CELLS; ++i)
+        for (short j = 0; j < NUM_CELLS; ++j)
+            delete cells[i][j];
+    
+    for (short i = 0; i < NUM_CELLS; ++i)
+        delete[] cells[i];
+    delete[] cells;
 }
 
 ProgramState::ProgramState() 
@@ -26,18 +48,20 @@ ProgramState::ProgramState()
 void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     updateInput(dtTime_, mousePos_);
-    
-
 }
 
 void ProgramState::render(sf::RenderTarget* target_)
 {
-    
-    for (Cell& iter : cells)
+    for (short i = 0; i < NUM_CELLS; ++i)
     {
-        iter.render(target_);
+        for (short j = 0; j < NUM_CELLS; ++j)
+        {
+            cells[i][j]->render(target_);
+        }
     }
-
+    //cells[0][0].render(target_);
+    //foo.render(target_);
+    //target_->draw(sprites);
 }
 
 // ######################################################################## (Program functions)

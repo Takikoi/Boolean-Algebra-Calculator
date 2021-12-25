@@ -6,7 +6,10 @@
 class ProgramState : public State
 {
 private:
-    std::vector<Cell> cells;
+    Cell*** cells;
+    Cell* foo;
+    sf::Texture textureSheet;
+    sf::Sprite sprites;
 
     void initCells();
 protected:
