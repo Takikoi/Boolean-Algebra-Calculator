@@ -9,7 +9,7 @@ private:
     sf::RectangleShape rec;
     sf::Texture textureSheet;
     sf::Sprite sprites;
-    std::map<std::string, sf::Sprite> logicComponents;
+    std::map<std::string, sf::IntRect> texRec;
 
     void initVariables();
     void initTexture();
@@ -24,7 +24,7 @@ public:
     void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);
     void updateMousePos(const sf::Vector2i& mousePos_);
 
-    void update(const float& dtTime_, const sf::Vector2i& mousePos_);
+    void update(const float& dtTime_, const sf::Vector2i& mousePos_, const std::string& type_);
     void render(sf::RenderTarget* target_ = NULL);
 };
 

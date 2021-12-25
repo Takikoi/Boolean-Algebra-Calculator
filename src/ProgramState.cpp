@@ -43,6 +43,13 @@ ProgramState::ProgramState()
 void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     updateInput(dtTime_, mousePos_);
+    for (short i = 0; i < NUM_CELLS; ++i)
+    {
+        for (short j = 0; j < NUM_CELLS; ++j)
+        {
+            cells[i][j]->update(dtTime_, mousePos_, "Signal A");
+        }
+    }
 }
 
 void ProgramState::render(sf::RenderTarget* target_)

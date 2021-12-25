@@ -14,15 +14,17 @@ void Cell::initTexture()
 
 void Cell::initSprites()
 {
-    logicComponents.emplace("OR gate", sf::Sprite(textureSheet, sf::IntRect(0, 0, 64, 64)));
-    logicComponents.emplace("AND gate", sf::Sprite(textureSheet, sf::IntRect(CELL_SIZE, 0, 64, 64)));
-    logicComponents.emplace("NOT gate", sf::Sprite(textureSheet, sf::IntRect(CELL_SIZE*2, 0, 64, 64)));
-    logicComponents.emplace("Gate input junction", sf::Sprite(textureSheet, sf::IntRect(0, CELL_SIZE, 64, 64)));
-    logicComponents.emplace("Gate left input", sf::Sprite(textureSheet, sf::IntRect(CELL_SIZE, CELL_SIZE, 64, 64)));
-    logicComponents.emplace("Gate right input", sf::Sprite(textureSheet, sf::IntRect(CELL_SIZE*2, CELL_SIZE, 64, 64)));
-    logicComponents.emplace("Signal A", sf::Sprite(textureSheet, sf::IntRect(0, CELL_SIZE*2, 64, 64)));
-    logicComponents.emplace("Signal B", sf::Sprite(textureSheet, sf::IntRect(CELL_SIZE, CELL_SIZE*2, 64, 64)));
-    logicComponents.emplace("Signal C", sf::Sprite(textureSheet, sf::IntRect(CELL_SIZE*2, CELL_SIZE*2, 64, 64)));
+    sprites.setTexture(textureSheet);
+
+    texRec.emplace("OR gate", sf::IntRect(0, 0, 64, 64));
+    texRec.emplace("AND gate", sf::IntRect(CELL_SIZE, 0, 64, 64));
+    texRec.emplace("NOT gate", sf::IntRect(CELL_SIZE*2, 0, 64, 64));
+    texRec.emplace("Gate input junction", sf::IntRect(0, CELL_SIZE, 64, 64));
+    texRec.emplace("Gate left input", sf::IntRect(CELL_SIZE, CELL_SIZE, 64, 64));
+    texRec.emplace("Gate right input", sf::IntRect(CELL_SIZE*2, CELL_SIZE, 64, 64));
+    texRec.emplace("Signal A", sf::IntRect(0, CELL_SIZE*2, 64, 64));
+    texRec.emplace("Signal B", sf::IntRect(CELL_SIZE, CELL_SIZE*2, 64, 64));
+    texRec.emplace("Signal C", sf::IntRect(CELL_SIZE*2, CELL_SIZE*2, 64, 64));
 }
 
 Cell::~Cell()
@@ -36,14 +38,16 @@ Cell::Cell(const sf::Vector2f& pos_)
     initVariables();
     initTexture();
     initSprites();
-    sprites = logicComponents["Signal A"];
+
     sprites.setPosition(pos_);
     rec.setPosition(pos_);
 }
 
 
-void Cell::update(const float& dtTime_, const sf::Vector2i& mousePos_)
-{}
+void Cell::update(const float& dtTime_, const sf::Vector2i& mousePos_, const std::string& type_)
+{
+    sprites.setTextureRect(texRec[type_]);
+}
 
 void Cell::render(sf::RenderTarget* target_)
 {
