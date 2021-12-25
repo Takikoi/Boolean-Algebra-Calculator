@@ -60,10 +60,17 @@ void Cell::render(sf::RenderTarget* target_)
 void Cell::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
 {}
 
-void Cell::updateMousePos(const sf::Vector2i& mousePos_)
-{}
-
 void Cell::setColor(const sf::Color& color_)
 {
     rec.setFillColor(color_);
+}
+
+bool Cell::cursorDetected(const sf::Vector2i& mousePos_)
+{
+    if ((float)mousePos_.x > rec.getPosition().x && (float)mousePos_.x < (rec.getPosition().x + rec.getSize().x)
+     && (float)mousePos_.y > rec.getPosition().y && (float)mousePos_.y < (rec.getPosition().y + rec.getSize().y))
+    {
+        return true;
+    }
+    else return false;
 }

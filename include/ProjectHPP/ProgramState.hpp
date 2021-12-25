@@ -7,7 +7,7 @@ class ProgramState : public State
 {
 private:
     Cell*** cells;
-    std::map<std::string, sf::Sprite> logicComponents;
+    std::map<short, std::string> cellType;
     
     void initCells();
 protected:

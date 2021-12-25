@@ -47,7 +47,14 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
     {
         for (short j = 0; j < NUM_CELLS; ++j)
         {
-            cells[i][j]->update(dtTime_, mousePos_, "Signal A");
+            if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                cells[i][j]->update(dtTime_, mousePos_, "Signal A");
+            }
+            else
+            {
+                cells[i][j]->update(dtTime_, mousePos_, "Signal C");
+            }
         }
     }
 }
