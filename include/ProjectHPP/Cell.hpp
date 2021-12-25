@@ -9,6 +9,7 @@ private:
     sf::RectangleShape rec;
     sf::Texture textureSheet;
     sf::Sprite sprites;
+    std::map<std::string, sf::Sprite> logicComponents;
 
     void initVariables();
     void initTexture();
@@ -18,7 +19,7 @@ public:
     Cell(const sf::Vector2f& pos_);
     ~Cell();
     
-    void setColor(sf::Color color_);
+    void setColor(const sf::Color& color_);
 
     void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);
     void updateMousePos(const sf::Vector2i& mousePos_);

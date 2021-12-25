@@ -2,7 +2,7 @@
 
 void ProgramState::initCells()
 {
-    // Allocate cells
+    // Allocate cells matrix
     cells = new Cell** [NUM_CELLS];
     for (short i = 0; i < NUM_CELLS; ++i)
         cells[i] = new Cell*[NUM_CELLS];
@@ -51,10 +51,10 @@ void ProgramState::render(sf::RenderTarget* target_)
     {
         for (short j = 0; j < NUM_CELLS; ++j)
         {
-            //cells[i][j]->render(target_);
+            cells[i][j]->render(target_);
         }
     }
-    cells[0][0]->render(target_);
+    //cells[0][0]->render(target_);
 }
 
 // ######################################################################## (Program functions)

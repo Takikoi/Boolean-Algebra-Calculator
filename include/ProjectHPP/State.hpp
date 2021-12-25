@@ -8,7 +8,6 @@
 class State
 {
 protected:
-    std::vector<sf::Texture> backgrounds;
     sf::Vector2i mousePos;
 
     bool quit;

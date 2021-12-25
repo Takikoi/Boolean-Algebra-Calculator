@@ -7,10 +7,12 @@ class ProgramState : public State
 {
 private:
     Cell*** cells;
-
+    std::map<std::string, sf::Sprite> logicComponents;
+    
     void initCells();
 protected:
     // std::vector<sf::Texture> textures;
+    // sf::Vector2i mousePos;
     // bool quit;
 
 public:
