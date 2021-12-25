@@ -6,10 +6,15 @@
 class ProgramState : public State
 {
 private:
+    sf::Event ev;
+
     Cell*** cells;
-    std::map<short, std::string> cellType;
-    
+    std::vector<CellType> cellType;
+    unsigned char iterator = 0;
+    bool cellSelected;
+
     void initCells();
+    void initCellType();
 protected:
     // std::vector<sf::Texture> textures;
     // sf::Vector2i mousePos;

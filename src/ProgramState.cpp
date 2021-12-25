@@ -1,5 +1,20 @@
 #include "ProgramState.hpp"
 
+void ProgramState::initCellType()
+{
+    cellType.push_back(OR_GATE);
+    cellType.push_back(AND_GATE);
+    cellType.push_back(NOT_GATE);
+
+    cellType.push_back(Gate_INPUT);
+    cellType.push_back(Gate_INPUT_LEFT);
+    cellType.push_back(Gate_INPUT_RIGHT);
+
+    cellType.push_back(SIGNAL_A);
+    cellType.push_back(SIGNAL_B);
+    cellType.push_back(SIGNAL_C);
+}
+
 void ProgramState::initCells()
 {
     // Allocate cells matrix
@@ -7,7 +22,7 @@ void ProgramState::initCells()
     for (short i = 0; i < NUM_CELLS; ++i)
         cells[i] = new Cell*[NUM_CELLS];
 
-    // Init Cells field
+    // Create Cells matrix
     short x(0), y(0);
     for (short i = 0; i < NUM_CELLS; ++i)
     {
@@ -36,6 +51,7 @@ ProgramState::ProgramState()
     : State()
 {
     initCells();
+    initCellType();
 }
 
 // ######################################################################## (Main Update & Render)
@@ -47,14 +63,21 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
     {
         for (short j = 0; j < NUM_CELLS; ++j)
         {
+            // if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            // {
+            //     cells[i][j]->update(dtTime_, mousePos_, OR_GATE);
+            // }
+            // else
+            // {
+            //     cells[i][j]->update(dtTime_, mousePos_, SIGNAL_C);
+            // }
             if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                cells[i][j]->update(dtTime_, mousePos_, "Signal A");
+                iterator++;
+                if (iterator == cellType.size())
+                    iterator = 0;
             }
-            else
-            {
-                cells[i][j]->update(dtTime_, mousePos_, "Signal C");
-            }
+            cells[i][j]->update(dtTime_, mousePos_, cellType[iterator]);
         }
     }
 }

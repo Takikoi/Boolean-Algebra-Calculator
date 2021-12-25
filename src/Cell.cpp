@@ -16,15 +16,15 @@ void Cell::initSprites()
 {
     sprites.setTexture(textureSheet);
 
-    texRec.emplace("OR gate", sf::IntRect(0, 0, 64, 64));
-    texRec.emplace("AND gate", sf::IntRect(CELL_SIZE, 0, 64, 64));
-    texRec.emplace("NOT gate", sf::IntRect(CELL_SIZE*2, 0, 64, 64));
-    texRec.emplace("Gate input junction", sf::IntRect(0, CELL_SIZE, 64, 64));
-    texRec.emplace("Gate left input", sf::IntRect(CELL_SIZE, CELL_SIZE, 64, 64));
-    texRec.emplace("Gate right input", sf::IntRect(CELL_SIZE*2, CELL_SIZE, 64, 64));
-    texRec.emplace("Signal A", sf::IntRect(0, CELL_SIZE*2, 64, 64));
-    texRec.emplace("Signal B", sf::IntRect(CELL_SIZE, CELL_SIZE*2, 64, 64));
-    texRec.emplace("Signal C", sf::IntRect(CELL_SIZE*2, CELL_SIZE*2, 64, 64));
+    texRec.emplace(OR_GATE, sf::IntRect(0, 0, 64, 64));
+    texRec.emplace(AND_GATE, sf::IntRect(CELL_SIZE, 0, 64, 64));
+    texRec.emplace(NOT_GATE, sf::IntRect(CELL_SIZE*2, 0, 64, 64));
+    texRec.emplace(Gate_INPUT, sf::IntRect(0, CELL_SIZE, 64, 64));
+    texRec.emplace(Gate_INPUT_LEFT, sf::IntRect(CELL_SIZE, CELL_SIZE, 64, 64));
+    texRec.emplace(Gate_INPUT_RIGHT, sf::IntRect(CELL_SIZE*2, CELL_SIZE, 64, 64));
+    texRec.emplace(SIGNAL_A, sf::IntRect(0, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_B, sf::IntRect(CELL_SIZE, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_C, sf::IntRect(CELL_SIZE*2, CELL_SIZE*2, 64, 64));
 }
 
 Cell::~Cell()
@@ -44,7 +44,7 @@ Cell::Cell(const sf::Vector2f& pos_)
 }
 
 
-void Cell::update(const float& dtTime_, const sf::Vector2i& mousePos_, const std::string& type_)
+void Cell::update(const float& dtTime_, const sf::Vector2i& mousePos_, const CellType& type_)
 {
     sprites.setTextureRect(texRec[type_]);
 }
