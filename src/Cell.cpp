@@ -8,7 +8,7 @@ void Cell::initVariables()
 
 void Cell::initTexture()
 {
-    if (!textureSheet.loadFromFile("../assets/texture.png"))
+    if (!textureSheet.loadFromFile("../assets/Boolean Assets.png"))
         std::cout << "[ERROR] : Failed to load texture.";
     else 
         std::cout << "[MESSAGE]: Successfully loaded texture sheet.\n";
@@ -30,10 +30,9 @@ Cell::Cell(const sf::Vector2f& pos_)
 {
     initVariables();
     initTexture();
-    //textureSheet = *tex_;
     initSprites();
+    sprites.setPosition(pos_);
     rec.setPosition(pos_);
-    
 }
 
 
@@ -42,7 +41,7 @@ void Cell::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 
 void Cell::render(sf::RenderTarget* target_)
 {
-    //target_->draw(rec);
+    target_->draw(rec);
     target_->draw(sprites);
 }
 

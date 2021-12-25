@@ -19,11 +19,6 @@ void ProgramState::initCells()
         x = 0;
         y += CELL_SIZE;
     }
-    //cells[0][0] = Cell(sf::Vector2f(0, 0));
-
-    // textureSheet.loadFromFile("../assets/t2.png");
-    // sprites.setTexture(textureSheet);
-    //foo = Cell(sf::Vector2f(0, 0), &textureSheet);
 }
 
 ProgramState::~ProgramState()
@@ -56,12 +51,10 @@ void ProgramState::render(sf::RenderTarget* target_)
     {
         for (short j = 0; j < NUM_CELLS; ++j)
         {
-            cells[i][j]->render(target_);
+            //cells[i][j]->render(target_);
         }
     }
-    //cells[0][0].render(target_);
-    //foo.render(target_);
-    //target_->draw(sprites);
+    cells[0][0]->render(target_);
 }
 
 // ######################################################################## (Program functions)

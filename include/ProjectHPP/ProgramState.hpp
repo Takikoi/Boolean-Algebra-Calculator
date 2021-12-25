@@ -7,9 +7,6 @@ class ProgramState : public State
 {
 private:
     Cell*** cells;
-    Cell* foo;
-    sf::Texture textureSheet;
-    sf::Sprite sprites;
 
     void initCells();
 protected:
