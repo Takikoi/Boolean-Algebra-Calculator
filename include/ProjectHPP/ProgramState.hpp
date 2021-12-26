@@ -6,11 +6,14 @@
 class ProgramState : public State
 {
 private:
+    // DO NOT delete window in this class, because other State use it too
     sf::RenderWindow* window;
+
+    MouseClick mouseClick;
 
     Cell*** cells;
     std::vector<CellType> cellType;
-    unsigned char iterator = 0;
+    unsigned short iterator = 0;
     bool cellSelected;
 
     void initCells();

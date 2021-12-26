@@ -25,6 +25,8 @@ void Cell::initSprites()
     texRec.emplace(SIGNAL_A, sf::IntRect(0, CELL_SIZE*2, 64, 64));
     texRec.emplace(SIGNAL_B, sf::IntRect(CELL_SIZE, CELL_SIZE*2, 64, 64));
     texRec.emplace(SIGNAL_C, sf::IntRect(CELL_SIZE*2, CELL_SIZE*2, 64, 64));
+
+    sprites.setTextureRect(texRec[OR_GATE]);
 }
 
 Cell::~Cell()

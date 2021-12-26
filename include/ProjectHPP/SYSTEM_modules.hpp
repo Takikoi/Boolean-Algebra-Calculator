@@ -26,3 +26,10 @@ enum CellType : unsigned char
     SIGNAL_B,
     SIGNAL_C,
 };
+
+enum MouseClick : unsigned char
+{
+    LEFT,
+    MIDDLE,
+    RIGHT,
+};

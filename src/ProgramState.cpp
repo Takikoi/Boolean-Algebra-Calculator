@@ -38,8 +38,7 @@ void ProgramState::initCells()
 
 ProgramState::~ProgramState()
 {
-    delete window;
-
+    // Do not call delete window
     for (short i = 0; i < NUM_CELLS; ++i)
         for (short j = 0; j < NUM_CELLS; ++j)
             delete cells[i][j];
@@ -50,10 +49,10 @@ ProgramState::~ProgramState()
 }
 
 ProgramState::ProgramState(sf::RenderWindow* window_) 
-    : State()
+    : State(), window(window_)
 {
-    initCells();
     initCellType();
+    initCells();
 }
 
 // ######################################################################## (Main Update & Render)
@@ -61,26 +60,34 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
 void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     updateInput(dtTime_, mousePos_);
+
+    // Check Mouse Single-click
+
+    // Set Cell type
     for (short i = 0; i < NUM_CELLS; ++i)
     {
         for (short j = 0; j < NUM_CELLS; ++j)
         {
-            if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if (cells[i][j]->cursorDetected(mousePos_))
             {
-                cells[i][j]->update(dtTime_, mousePos_, OR_GATE);
+                static bool lock_click = false;
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click == false)
+                {
+                    std::cout << "lmb-pressed" << std::endl; // usually this will show in a loop because is being pressed;
+                    lock_click = true; //And now, after all your code, this will lock the loop and not print "lmb" in a x held time. 
+
+                }
+                else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click == true)
+                {
+                    std::cout << "lmb-released" << std::endl;
+                    lock_click = false; //unlock when the button(lmb) has been released.
+                    if (iterator >= (cellType.size() - 1))
+                        iterator = 0;
+                    else iterator++;
+                    std::cout << "Iter: " << iterator << std::endl;
+                    cells[i][j]->update(dtTime_, mousePos_, cellType[iterator]);
+                }
             }
-            else
-            {
-                cells[i][j]->update(dtTime_, mousePos_, SIGNAL_C);
-            }
-            // if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            // {
-            //     iterator++;
-            //     if (iterator == cellType.size())
-            //         iterator = 0;
-            // }
-            // if (sf::Event::MouseButtonReleased())
-            //     cells[i][j]->update(dtTime_, mousePos_, cellType[iterator]);
         }
     }
 }

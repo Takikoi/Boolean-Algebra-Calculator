@@ -21,8 +21,11 @@ Program::~Program()
 {
     // No need to call window->close(), bc it's already out of the isOpen() loop
     delete programState;
-    if (window != NULL)
-        delete window;
+
+    // if (window != NULL)
+    //     delete window;
+
+    delete window;
 }
 
 Program::Program()
@@ -76,6 +79,7 @@ const bool Program::running() const {
 
 void Program::pollProgramEvent()
 {
+    static bool lock_click;
     while (window->pollEvent(ev))
     {
         switch (ev.type)
@@ -83,6 +87,7 @@ void Program::pollProgramEvent()
         case sf::Event::Closed:
             window->close();
             break;
+        
         }
     }
 }
