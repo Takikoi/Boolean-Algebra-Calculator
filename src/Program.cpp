@@ -14,14 +14,15 @@ void Program::initWindow()
 
 void Program::initStates()
 {
-    programState = new ProgramState;
+    programState = new ProgramState(window);
 }
 
 Program::~Program() 
 {
     // No need to call window->close(), bc it's already out of the isOpen() loop
-    delete window;
     delete programState;
+    if (window != NULL)
+        delete window;
 }
 
 Program::Program()

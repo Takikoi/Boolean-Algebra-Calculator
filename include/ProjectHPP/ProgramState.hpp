@@ -6,7 +6,7 @@
 class ProgramState : public State
 {
 private:
-    sf::Event ev;
+    sf::RenderWindow* window;
 
     Cell*** cells;
     std::vector<CellType> cellType;
@@ -21,7 +21,7 @@ protected:
     // bool quit;
 
 public:
-    ProgramState();
+    ProgramState(sf::RenderWindow* window_);
     ~ProgramState();
 
     void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);

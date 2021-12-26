@@ -38,6 +38,8 @@ void ProgramState::initCells()
 
 ProgramState::~ProgramState()
 {
+    delete window;
+
     for (short i = 0; i < NUM_CELLS; ++i)
         for (short j = 0; j < NUM_CELLS; ++j)
             delete cells[i][j];
@@ -47,7 +49,7 @@ ProgramState::~ProgramState()
     delete[] cells;
 }
 
-ProgramState::ProgramState() 
+ProgramState::ProgramState(sf::RenderWindow* window_) 
     : State()
 {
     initCells();
@@ -63,21 +65,22 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
     {
         for (short j = 0; j < NUM_CELLS; ++j)
         {
-            // if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            // {
-            //     cells[i][j]->update(dtTime_, mousePos_, OR_GATE);
-            // }
-            // else
-            // {
-            //     cells[i][j]->update(dtTime_, mousePos_, SIGNAL_C);
-            // }
             if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                iterator++;
-                if (iterator == cellType.size())
-                    iterator = 0;
+                cells[i][j]->update(dtTime_, mousePos_, OR_GATE);
             }
-            cells[i][j]->update(dtTime_, mousePos_, cellType[iterator]);
+            else
+            {
+                cells[i][j]->update(dtTime_, mousePos_, SIGNAL_C);
+            }
+            // if (cells[i][j]->cursorDetected(mousePos_) && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            // {
+            //     iterator++;
+            //     if (iterator == cellType.size())
+            //         iterator = 0;
+            // }
+            // if (sf::Event::MouseButtonReleased())
+            //     cells[i][j]->update(dtTime_, mousePos_, cellType[iterator]);
         }
     }
 }
