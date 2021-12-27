@@ -2,17 +2,19 @@
 
 void ProgramState::initCellType()
 {
+    cellType.push_back(EMPTY_CELL);
+
     cellType.push_back(OR_GATE);
     cellType.push_back(AND_GATE);
     cellType.push_back(NOT_GATE);
 
     cellType.push_back(Gate_INPUT);
-    cellType.push_back(Gate_INPUT_LEFT);
-    cellType.push_back(Gate_INPUT_RIGHT);
+    cellType.push_back(WIRE_CORNER_LEFT);
+    cellType.push_back(WIRE_CORNER_RIGHT);
 
-    cellType.push_back(SIGNAL_A);
-    cellType.push_back(SIGNAL_B);
-    cellType.push_back(SIGNAL_C);
+    cellType.push_back(SIGNAL_IN_A);
+    cellType.push_back(SIGNAL_IN_B);
+    cellType.push_back(SIGNAL_IN_C);
 }
 
 void ProgramState::initCells()
@@ -60,32 +62,50 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
 void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     updateInput(dtTime_, mousePos_);
-
+    static bool lock_enter = false;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == false)
+    {
+        lock_enter = true;
+    }
+    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == true)
+    {
+        generateExpression();
+        lock_enter = false; //unlock when the button(lmb) has been released.
+    }
     // Check Mouse Single-click
-
-    // Set Cell type
     for (short i = 0; i < NUM_CELLS; ++i)
     {
         for (short j = 0; j < NUM_CELLS; ++j)
         {
             if (cells[i][j]->cursorDetected(mousePos_))
             {
-                static bool lock_click = false;
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click == false)
+                static bool lock_click_left = false;
+                static bool lock_click_right = false;
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == false)
                 {
                     std::cout << "lmb-pressed" << std::endl; // usually this will show in a loop because is being pressed;
-                    lock_click = true; //And now, after all your code, this will lock the loop and not print "lmb" in a x held time. 
+                    lock_click_left = true; //And now, after all your code, this will lock the loop and not print "lmb" in a x held time. 
 
                 }
-                else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click == true)
+                else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == true)
                 {
                     std::cout << "lmb-released" << std::endl;
-                    lock_click = false; //unlock when the button(lmb) has been released.
-                    if (iterator >= (cellType.size() - 1))
-                        iterator = 0;
-                    else iterator++;
-                    std::cout << "Iter: " << iterator << std::endl;
-                    cells[i][j]->update(dtTime_, mousePos_, cellType[iterator]);
+                    lock_click_left = false; //unlock when the button(lmb) has been released.
+
+                    cells[i][j]->changeToNextType();
+                }
+                else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && lock_click_right == false)
+                {
+                    std::cout << "rmb-pressed" << std::endl; // usually this will show in a loop because is being pressed;
+                    lock_click_right = true; //And now, after all your code, this will lock the loop and not print "lmb" in a x held time. 
+
+                }
+                else if (!sf::Mouse::isButtonPressed(sf::Mouse::Right) && lock_click_right == true)
+                {
+                    std::cout << "rmb-released" << std::endl;
+                    lock_click_right = false; //unlock when the button(lmb) has been released.
+
+                    cells[i][j]->changeToPreviousType();
                 }
             }
         }
@@ -114,4 +134,19 @@ void ProgramState::updateInput(const float& dtTime_, const sf::Vector2i& mousePo
 
 void ProgramState::updateMousePos(const sf::Vector2i& mousePos_) {
     mousePos = mousePos_;
+}
+
+void ProgramState::generateExpression()
+{
+    for (short j = NUM_CELLS - 1; j >= 0; --j)
+    {
+        for (short i = 0; i < NUM_CELLS; ++i)
+        {
+            if (cells[i][j]->getCurrentType() == SIGNAL_OUT_1)
+            {
+                std::cout << "Detected" << "\n";
+
+            }
+        }
+    }
 }

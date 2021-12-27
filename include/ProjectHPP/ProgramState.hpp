@@ -9,7 +9,7 @@ private:
     // DO NOT delete window in this class, because other State use it too
     sf::RenderWindow* window;
 
-    MouseClick mouseClick;
+    std::string boolExpression;
 
     Cell*** cells;
     std::vector<CellType> cellType;
@@ -32,5 +32,7 @@ public:
 
     void update(const float& dtTime_, const sf::Vector2i& mousePos_);
     void render(sf::RenderTarget* target_ = NULL);
+
+    void generateExpression();
 };
 

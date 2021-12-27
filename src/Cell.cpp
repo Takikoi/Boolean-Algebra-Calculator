@@ -8,7 +8,7 @@ void Cell::initVariables()
 
 void Cell::initTexture()
 {
-    if (!textureSheet.loadFromFile("../assets/Boolean Assets.png"))
+    if (!textureSheet.loadFromFile("../assets/Boolean Assets ver2.png"))
         std::cout << "[ERROR] : Failed to load texture.";
 }
 
@@ -16,17 +16,32 @@ void Cell::initSprites()
 {
     sprites.setTexture(textureSheet);
 
-    texRec.emplace(OR_GATE, sf::IntRect(0, 0, 64, 64));
-    texRec.emplace(AND_GATE, sf::IntRect(CELL_SIZE, 0, 64, 64));
-    texRec.emplace(NOT_GATE, sf::IntRect(CELL_SIZE*2, 0, 64, 64));
-    texRec.emplace(Gate_INPUT, sf::IntRect(0, CELL_SIZE, 64, 64));
-    texRec.emplace(Gate_INPUT_LEFT, sf::IntRect(CELL_SIZE, CELL_SIZE, 64, 64));
-    texRec.emplace(Gate_INPUT_RIGHT, sf::IntRect(CELL_SIZE*2, CELL_SIZE, 64, 64));
-    texRec.emplace(SIGNAL_A, sf::IntRect(0, CELL_SIZE*2, 64, 64));
-    texRec.emplace(SIGNAL_B, sf::IntRect(CELL_SIZE, CELL_SIZE*2, 64, 64));
-    texRec.emplace(SIGNAL_C, sf::IntRect(CELL_SIZE*2, CELL_SIZE*2, 64, 64));
+    texRec.emplace(EMPTY_CELL, sf::IntRect(CELL_SIZE*6, 0, 64, 64));
 
-    sprites.setTextureRect(texRec[OR_GATE]);
+    texRec.emplace(OR_GATE,  sf::IntRect(CELL_SIZE*0, 0, 64, 64));
+    texRec.emplace(AND_GATE, sf::IntRect(CELL_SIZE*1, 0, 64, 64));
+    texRec.emplace(NOT_GATE, sf::IntRect(CELL_SIZE*2, 0, 64, 64));
+
+    texRec.emplace(Gate_INPUT,        sf::IntRect(CELL_SIZE*0, CELL_SIZE, 64, 64));
+    texRec.emplace(WIRE_CORNER_LEFT,  sf::IntRect(CELL_SIZE*1, CELL_SIZE, 64, 64));
+    texRec.emplace(WIRE_CORNER_RIGHT, sf::IntRect(CELL_SIZE*2, CELL_SIZE, 64, 64));
+    texRec.emplace(WIRE_HORIZONTAL,   sf::IntRect(CELL_SIZE*3, CELL_SIZE, 64, 64));
+    texRec.emplace(WIRE_VERTICAL,     sf::IntRect(CELL_SIZE*4, CELL_SIZE, 64, 64));
+
+    texRec.emplace(SIGNAL_IN_A, sf::IntRect(CELL_SIZE*0, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_IN_B, sf::IntRect(CELL_SIZE*1, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_IN_C, sf::IntRect(CELL_SIZE*2, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_IN_D, sf::IntRect(CELL_SIZE*3, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_IN_E, sf::IntRect(CELL_SIZE*4, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_IN_F, sf::IntRect(CELL_SIZE*5, CELL_SIZE*2, 64, 64));
+    texRec.emplace(SIGNAL_IN_G, sf::IntRect(CELL_SIZE*6, CELL_SIZE*2, 64, 64));
+
+    texRec.emplace(SIGNAL_OUT_1, sf::IntRect(CELL_SIZE*3, 0, 64, 64));
+    texRec.emplace(SIGNAL_OUT_2, sf::IntRect(CELL_SIZE*4, 0, 64, 64));
+    texRec.emplace(SIGNAL_OUT_3, sf::IntRect(CELL_SIZE*5, 0, 64, 64));
+
+    // Set initial type is EMPTY_CELL
+    sprites.setTextureRect(texRec[EMPTY_CELL]);
 }
 
 Cell::~Cell()
@@ -45,6 +60,7 @@ Cell::Cell(const sf::Vector2f& pos_)
     rec.setPosition(pos_);
 }
 
+// ######################################################################## (Main Update & Render)
 
 void Cell::update(const float& dtTime_, const sf::Vector2i& mousePos_, const CellType& type_)
 {
@@ -57,7 +73,7 @@ void Cell::render(sf::RenderTarget* target_)
     target_->draw(sprites);
 }
 
-
+// ######################################################################## (Program functions)
 
 void Cell::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
 {}
@@ -75,4 +91,28 @@ bool Cell::cursorDetected(const sf::Vector2i& mousePos_)
         return true;
     }
     else return false;
+}
+
+void Cell::changeToNextType()
+{
+    if (currentType == SIGNAL_OUT_3)
+        currentType = EMPTY_CELL;
+    else 
+        currentType++;
+    sprites.setTextureRect(texRec[currentType]);
+    std::cout << currentType << std::endl;
+}
+
+void Cell::changeToPreviousType()
+{
+    if (currentType == EMPTY_CELL)
+        currentType = SIGNAL_OUT_3;
+    else 
+        currentType--;
+    sprites.setTextureRect(texRec[currentType]);
+    std::cout << currentType << std::endl;
+}
+
+const unsigned char& Cell::getCurrentType() const {
+    return currentType;
 }

@@ -8,6 +8,7 @@ void Program::initWindow()
     title = "Boolean Algebra Calculator 1.0";
     windowBounds = sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT);
     window = new sf::RenderWindow(windowBounds, title, sf::Style::Close | sf::Style::Titlebar);
+    window->setPosition(sf::Vector2i(0, 0));
     window->setFramerateLimit(FPS);
     screenBounds = sf::VideoMode::getDesktopMode();
 }
@@ -19,12 +20,7 @@ void Program::initStates()
 
 Program::~Program() 
 {
-    // No need to call window->close(), bc it's already out of the isOpen() loop
     delete programState;
-
-    // if (window != NULL)
-    //     delete window;
-
     delete window;
 }
 

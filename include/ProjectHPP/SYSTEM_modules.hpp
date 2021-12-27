@@ -14,17 +14,28 @@ extern int CELL_SIZE;
 
 enum CellType : unsigned char 
 {
-    OR_GATE = 10,
+    EMPTY_CELL = 10,
+    OR_GATE,
     AND_GATE,
     NOT_GATE,
 
     Gate_INPUT,
-    Gate_INPUT_LEFT,
-    Gate_INPUT_RIGHT,
+    WIRE_CORNER_LEFT,
+    WIRE_CORNER_RIGHT,
+    WIRE_HORIZONTAL,
+    WIRE_VERTICAL,
 
-    SIGNAL_A,
-    SIGNAL_B,
-    SIGNAL_C,
+    SIGNAL_IN_A,
+    SIGNAL_IN_B,
+    SIGNAL_IN_C,
+    SIGNAL_IN_D,
+    SIGNAL_IN_E,
+    SIGNAL_IN_F,
+    SIGNAL_IN_G,
+
+    SIGNAL_OUT_1,
+    SIGNAL_OUT_2,
+    SIGNAL_OUT_3
 };
 
 enum MouseClick : unsigned char

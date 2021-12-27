@@ -7,13 +7,16 @@ class Cell
 {
 private:
     sf::RectangleShape rec;
+
     sf::Texture textureSheet;
     sf::Sprite sprites;
-    std::map<CellType, sf::IntRect> texRec;
+    std::map<unsigned char, sf::IntRect> texRec;
+    unsigned char currentType = EMPTY_CELL;
 
     void initVariables();
     void initTexture();
     void initSprites();
+
 public:
     Cell();
     Cell(const sf::Vector2f& pos_);
@@ -27,5 +30,8 @@ public:
     void render(sf::RenderTarget* target_ = NULL);
 
     bool cursorDetected(const sf::Vector2i& mousePos_);
+    void changeToNextType();
+    void changeToPreviousType();
+    const unsigned char& getCurrentType() const;
 };
 
