@@ -79,6 +79,7 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         {
             if (cells[i][j]->cursorDetected(mousePos_))
             {
+                std::cout << "(" << i << ", " << j << ")\n";
                 static bool lock_click_left = false;
                 static bool lock_click_right = false;
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == false)
@@ -138,15 +139,38 @@ void ProgramState::updateMousePos(const sf::Vector2i& mousePos_) {
 
 void ProgramState::generateExpression()
 {
-    for (short j = NUM_CELLS - 1; j >= 0; --j)
-    {
-        for (short i = 0; i < NUM_CELLS; ++i)
-        {
+    short i, j;
+    for (j = NUM_CELLS - 1; j >= 0; --j)
+        for (i = 0; i < NUM_CELLS; ++i)
             if (cells[i][j]->getCurrentType() == SIGNAL_OUT_1)
-            {
-                std::cout << "Detected" << "\n";
+                goto endLoop;
+    endLoop:
+    checkUp(i, j);
+    checkDown(i, j);
+}
 
+void ProgramState::checkUp(short& x_, short& y_)
+{
+    for (short j = y_ - 1; j >= 0; --j)
+    {
+        for (short i = x_ - 1; i >= 0; --i)
+        {
+            switch (cells[i][j]->getCurrentType())
+            {
+            case OR_GATE:
+                boolExpression.insert(0, expressi)
+                checkUp(i, j);
+                checkDown(i, j);
+                break;
+            
+            default:
+                break;
             }
         }
     }
+}
+
+void ProgramState::checkDown(short& x_, short& y_)
+{
+
 }

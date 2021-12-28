@@ -34,5 +34,7 @@ public:
     void render(sf::RenderTarget* target_ = NULL);
 
     void generateExpression();
+    void checkUp(short& x_, short& y_);
+    void checkDown(short& x_, short& y_);
 };
 
