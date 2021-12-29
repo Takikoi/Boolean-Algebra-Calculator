@@ -8,7 +8,7 @@ class ProgramState : public State
 private:
     // DO NOT delete window in this class, because other State use it too
     sf::RenderWindow* window;
-
+    std::map<unsigned char, char> expressionElement;
     std::string boolExpression;
 
     Cell*** cells;
@@ -18,6 +18,7 @@ private:
 
     void initCells();
     void initCellType();
+    void initExpElement();
 protected:
     // std::vector<sf::Texture> textures;
     // sf::Vector2i mousePos;

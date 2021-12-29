@@ -1,5 +1,32 @@
 #include "ProgramState.hpp"
 
+void ProgramState::initExpElement()
+{
+    expressionElement.emplace(EMPTY_CELL, NULL);
+
+    expressionElement.emplace(OR_GATE , '+');
+    expressionElement.emplace(AND_GATE, '*');
+    expressionElement.emplace(NOT_GATE, '!');
+
+    // expressionElement.emplace(Gate_INPUT       );
+    // expressionElement.emplace(WIRE_CORNER_LEFT );
+    // expressionElement.emplace(WIRE_CORNER_RIGHT);
+    // expressionElement.emplace(WIRE_HORIZONTAL  );
+    // expressionElement.emplace(WIRE_VERTICAL    );
+
+    expressionElement.emplace(SIGNAL_IN_A, 'A');
+    expressionElement.emplace(SIGNAL_IN_B, 'B');
+    expressionElement.emplace(SIGNAL_IN_C, 'C');
+    expressionElement.emplace(SIGNAL_IN_D, 'D');
+    expressionElement.emplace(SIGNAL_IN_E, 'E');
+    expressionElement.emplace(SIGNAL_IN_F, 'F');
+    expressionElement.emplace(SIGNAL_IN_G, 'G');
+
+    expressionElement.emplace(SIGNAL_OUT_1, 'x');
+    expressionElement.emplace(SIGNAL_OUT_2, 'y');
+    expressionElement.emplace(SIGNAL_OUT_3, 'z');
+}
+
 void ProgramState::initCellType()
 {
     cellType.push_back(EMPTY_CELL);
@@ -55,6 +82,7 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
 {
     initCellType();
     initCells();
+    initExpElement();
 }
 
 // ######################################################################## (Main Update & Render)
@@ -70,6 +98,8 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
     else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == true)
     {
         generateExpression();
+        std::cout << "calculating\n";
+        std::cout << "EXP: " << boolExpression << "\n";
         lock_enter = false; //unlock when the button(lmb) has been released.
     }
     // Check Mouse Single-click
@@ -79,7 +109,7 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         {
             if (cells[i][j]->cursorDetected(mousePos_))
             {
-                std::cout << "(" << i << ", " << j << ")\n";
+                //std::cout << "(" << i << ", " << j << ")\n";
                 static bool lock_click_left = false;
                 static bool lock_click_right = false;
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == false)
@@ -158,11 +188,17 @@ void ProgramState::checkUp(short& x_, short& y_)
             switch (cells[i][j]->getCurrentType())
             {
             case OR_GATE:
-                boolExpression.insert(0, expressi)
+                boolExpression.insert(0, 1, expressionElement[OR_GATE]);
                 checkUp(i, j);
                 checkDown(i, j);
                 break;
             
+            case AND_GATE:
+                boolExpression.insert(0, 1, expressionElement[AND_GATE]);
+                checkUp(i, j);
+                checkDown(i, j);
+                break;
+
             default:
                 break;
             }
@@ -172,5 +208,27 @@ void ProgramState::checkUp(short& x_, short& y_)
 
 void ProgramState::checkDown(short& x_, short& y_)
 {
+    for (short j = y_ - 1; j >= 0; --j)
+    {
+        for (short i = x_ + 1; i < NUM_CELLS; ++i)
+        {
+            switch (cells[i][j]->getCurrentType())
+            {
+            case OR_GATE:
+                boolExpression.insert(boolExpression.end(), 1, expressionElement[OR_GATE]);
+                checkUp(i, j);
+                checkDown(i, j);
+                break;
+            
+            case AND_GATE:
+                boolExpression.insert(boolExpression.end(), 1, expressionElement[AND_GATE]);
+                checkUp(i, j);
+                checkDown(i, j);
+                break;
 
+            default:
+                break;
+            }
+        }
+    }
 }
