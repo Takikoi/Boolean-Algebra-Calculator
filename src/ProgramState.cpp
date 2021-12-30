@@ -83,6 +83,7 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
     initCellType();
     initCells();
     initExpElement();
+    expression = new BoolExpression(cells);
 }
 
 // ######################################################################## (Main Update & Render)
@@ -137,7 +138,7 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
     }
     else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == true)
     {
-        std::cout << "EXP: " << generateExpression() << "\n";
+        std::cout << "EXP: " << expression->getExpression() << "\n";
         lock_enter = false; //unlock when the button(lmb) has been released.
     }
 }
@@ -249,33 +250,38 @@ std::string ProgramState::exp(short x_, short y_, short flag)
     }
 }
 
-std::string ProgramState::exp2(short x_, short y_, unsigned char previousType_, bool up)
+std::string ProgramState::exp2(short x_, short y_, bool up)
 {
     std::string result = "";
     switch (cells[x_][y_]->getCurrentType())
     {
     case OR_GATE:
         result = "( + )";
-        result.replace(1, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 1));
-        result.replace(result.size() - 2, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 0));
+        result.replace(1, 1, exp2(x_, y_ - 1, 1));
+        result.replace(result.size() - 2, 1, exp2(x_, y_ - 1, 0));
         break;
     
     case AND_GATE:
         result = " * ";
-        result.replace(0, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 1));
-        result.replace(result.size() - 1, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 0));
+        result.replace(0, 1, exp2(x_, y_ - 1, 1));
+        result.replace(result.size() - 1, 1, exp2(x_, y_ - 1, 0));
+        break;
+
+    case NOT_GATE:
+        result = "( )'";
+        result.replace(1, 1, exp2(x_, y_ - 1));
         break;
 
     case GATE_INPUT:
-        result = (up ? exp2(x_ - 1, y_, cells[x_][y_]->getCurrentType()) : exp2(x_ + 1, y_, cells[x_][y_]->getCurrentType()));
+        result = (up ? exp2(x_ - 1, y_) : exp2(x_ + 1, y_));
         break;
 
     case WIRE_CORNER_LEFT:
-        result = exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType());
+        result = exp2(x_, y_ - 1);
         break;
 
     case WIRE_CORNER_RIGHT:
-        result = exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType());
+        result = exp2(x_, y_ - 1);
         break;
 
     case SIGNAL_IN_A:
