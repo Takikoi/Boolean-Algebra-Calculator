@@ -22,7 +22,7 @@ void Cell::initSprites()
     texRec.emplace(AND_GATE, sf::IntRect(CELL_SIZE*1, 0, 64, 64));
     texRec.emplace(NOT_GATE, sf::IntRect(CELL_SIZE*2, 0, 64, 64));
 
-    texRec.emplace(Gate_INPUT,        sf::IntRect(CELL_SIZE*0, CELL_SIZE, 64, 64));
+    texRec.emplace(GATE_INPUT,        sf::IntRect(CELL_SIZE*0, CELL_SIZE, 64, 64));
     texRec.emplace(WIRE_CORNER_LEFT,  sf::IntRect(CELL_SIZE*1, CELL_SIZE, 64, 64));
     texRec.emplace(WIRE_CORNER_RIGHT, sf::IntRect(CELL_SIZE*2, CELL_SIZE, 64, 64));
     texRec.emplace(WIRE_HORIZONTAL,   sf::IntRect(CELL_SIZE*3, CELL_SIZE, 64, 64));

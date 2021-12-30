@@ -8,7 +8,7 @@ class ProgramState : public State
 private:
     // DO NOT delete window in this class, because other State use it too
     sf::RenderWindow* window;
-    std::map<unsigned char, char> expressionElement;
+    std::map<unsigned char, std::string> expressionElement;
     std::string boolExpression;
 
     Cell*** cells;
@@ -34,8 +34,8 @@ public:
     void update(const float& dtTime_, const sf::Vector2i& mousePos_);
     void render(sf::RenderTarget* target_ = NULL);
 
-    void generateExpression();
-    void checkUp(short& x_, short& y_);
-    void checkDown(short& x_, short& y_);
+    std::string generateExpression();
+    std::string exp(short x_, short y_, short flag);
+    std::string exp2(short x_, short y_, unsigned char, bool up = 1);
 };
 

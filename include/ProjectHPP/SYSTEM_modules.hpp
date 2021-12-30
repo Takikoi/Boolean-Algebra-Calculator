@@ -19,7 +19,7 @@ enum CellType : unsigned char
     AND_GATE,
     NOT_GATE,
 
-    Gate_INPUT,
+    GATE_INPUT,
     WIRE_CORNER_LEFT,
     WIRE_CORNER_RIGHT,
     WIRE_HORIZONTAL,

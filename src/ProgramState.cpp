@@ -2,29 +2,29 @@
 
 void ProgramState::initExpElement()
 {
-    expressionElement.emplace(EMPTY_CELL, NULL);
+    expressionElement.emplace(EMPTY_CELL, "");
 
-    expressionElement.emplace(OR_GATE , '+');
-    expressionElement.emplace(AND_GATE, '*');
-    expressionElement.emplace(NOT_GATE, '!');
+    expressionElement.emplace(OR_GATE , "+");
+    expressionElement.emplace(AND_GATE, "*");
+    expressionElement.emplace(NOT_GATE, "!");
 
-    // expressionElement.emplace(Gate_INPUT       );
-    // expressionElement.emplace(WIRE_CORNER_LEFT );
-    // expressionElement.emplace(WIRE_CORNER_RIGHT);
-    // expressionElement.emplace(WIRE_HORIZONTAL  );
-    // expressionElement.emplace(WIRE_VERTICAL    );
+    expressionElement.emplace(GATE_INPUT       , "");
+    expressionElement.emplace(WIRE_CORNER_LEFT , "");
+    expressionElement.emplace(WIRE_CORNER_RIGHT, "");
+    expressionElement.emplace(WIRE_HORIZONTAL  , "");
+    expressionElement.emplace(WIRE_VERTICAL    , "");
 
-    expressionElement.emplace(SIGNAL_IN_A, 'A');
-    expressionElement.emplace(SIGNAL_IN_B, 'B');
-    expressionElement.emplace(SIGNAL_IN_C, 'C');
-    expressionElement.emplace(SIGNAL_IN_D, 'D');
-    expressionElement.emplace(SIGNAL_IN_E, 'E');
-    expressionElement.emplace(SIGNAL_IN_F, 'F');
-    expressionElement.emplace(SIGNAL_IN_G, 'G');
+    expressionElement.emplace(SIGNAL_IN_A, "A");
+    expressionElement.emplace(SIGNAL_IN_B, "B");
+    expressionElement.emplace(SIGNAL_IN_C, "C");
+    expressionElement.emplace(SIGNAL_IN_D, "D");
+    expressionElement.emplace(SIGNAL_IN_E, "E");
+    expressionElement.emplace(SIGNAL_IN_F, "F");
+    expressionElement.emplace(SIGNAL_IN_G, "G");
 
-    expressionElement.emplace(SIGNAL_OUT_1, 'x');
-    expressionElement.emplace(SIGNAL_OUT_2, 'y');
-    expressionElement.emplace(SIGNAL_OUT_3, 'z');
+    expressionElement.emplace(SIGNAL_OUT_1, "x");
+    expressionElement.emplace(SIGNAL_OUT_2, "y");
+    expressionElement.emplace(SIGNAL_OUT_3, "z");
 }
 
 void ProgramState::initCellType()
@@ -35,7 +35,7 @@ void ProgramState::initCellType()
     cellType.push_back(AND_GATE);
     cellType.push_back(NOT_GATE);
 
-    cellType.push_back(Gate_INPUT);
+    cellType.push_back(GATE_INPUT);
     cellType.push_back(WIRE_CORNER_LEFT);
     cellType.push_back(WIRE_CORNER_RIGHT);
 
@@ -90,18 +90,7 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
 void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
     updateInput(dtTime_, mousePos_);
-    static bool lock_enter = false;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == false)
-    {
-        lock_enter = true;
-    }
-    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == true)
-    {
-        generateExpression();
-        std::cout << "calculating\n";
-        std::cout << "EXP: " << boolExpression << "\n";
-        lock_enter = false; //unlock when the button(lmb) has been released.
-    }
+    
     // Check Mouse Single-click
     for (short i = 0; i < NUM_CELLS; ++i)
     {
@@ -141,6 +130,16 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
             }
         }
     }
+    static bool lock_enter = false;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == false)
+    {
+        lock_enter = true;
+    }
+    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == true)
+    {
+        std::cout << "EXP: " << generateExpression() << "\n";
+        lock_enter = false; //unlock when the button(lmb) has been released.
+    }
 }
 
 void ProgramState::render(sf::RenderTarget* target_)
@@ -167,68 +166,123 @@ void ProgramState::updateMousePos(const sf::Vector2i& mousePos_) {
     mousePos = mousePos_;
 }
 
-void ProgramState::generateExpression()
+std::string ProgramState::generateExpression()
 {
     short i, j;
     for (j = NUM_CELLS - 1; j >= 0; --j)
         for (i = 0; i < NUM_CELLS; ++i)
             if (cells[i][j]->getCurrentType() == SIGNAL_OUT_1)
+            {
+                std::cout << "Found output\n";
                 goto endLoop;
+            }
+                
     endLoop:
-    checkUp(i, j);
-    checkDown(i, j);
+    
+    return exp2(i, j - 1, 1);
 }
 
-void ProgramState::checkUp(short& x_, short& y_)
+std::string ProgramState::exp(short x_, short y_, short flag)
 {
-    for (short j = y_ - 1; j >= 0; --j)
+    std::string result = "";
+    if (flag == 0)
     {
-        for (short i = x_ - 1; i >= 0; --i)
+        for (short j = y_ - 2; j >= 0; --j)
         {
-            switch (cells[i][j]->getCurrentType())
+            for (short i = x_ - 1; i >= 0; --i)
             {
-            case OR_GATE:
-                boolExpression.insert(0, 1, expressionElement[OR_GATE]);
-                checkUp(i, j);
-                checkDown(i, j);
-                break;
-            
-            case AND_GATE:
-                boolExpression.insert(0, 1, expressionElement[AND_GATE]);
-                checkUp(i, j);
-                checkDown(i, j);
-                break;
+                switch (cells[i][j]->getCurrentType())
+                {
+                case OR_GATE:
+                    result = "( + )";
+                    std::cout << "(x, y): " << i << ", " << j << "\n";
+                    result.replace(1, 1, exp(i, j, 1));
+                    result.replace(result.size() - 2, 1, exp(i, j, 0));
+                    goto endLoop1;
+                    break;
+                
+                case AND_GATE:
+                    result = " * ";
+                    std::cout << "(x, y): " << i << ", " << j << "\n";
+                    result.replace(0, 1, exp(i, j, 0));
+                    goto endLoop1;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+                }
             }
         }
+        endLoop1:
+        return result;
+    }
+    else if (flag == 1)
+    {
+        for (short j = y_ - 1; j >= 0; --j)
+        {
+            for (short i = x_ + 1; i < NUM_CELLS; ++i)
+            {
+                switch (cells[i][j]->getCurrentType())
+                {
+                case OR_GATE:
+                    result = "( + )";
+                    std::cout << "(x, y): " << i << ", " << j << "\n";
+                    result.replace(1, 1, exp(i, j, 1));
+                    result.replace(result.size() - 2, 1, exp(i, j, 0));
+                    goto endLoop2;
+                    break;
+                
+                case AND_GATE:
+                    result = " * ";
+                    std::cout << "(x, y): " << i << ", " << j << "\n";
+                    result.replace(0, 1, exp(i, j, 0));
+                    goto endLoop2;
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+        endLoop2:
+        return result;
     }
 }
 
-void ProgramState::checkDown(short& x_, short& y_)
+std::string ProgramState::exp2(short x_, short y_, unsigned char previousType_, bool up)
 {
-    for (short j = y_ - 1; j >= 0; --j)
+    std::string result = "";
+    switch (cells[x_][y_]->getCurrentType())
     {
-        for (short i = x_ + 1; i < NUM_CELLS; ++i)
-        {
-            switch (cells[i][j]->getCurrentType())
-            {
-            case OR_GATE:
-                boolExpression.insert(boolExpression.end(), 1, expressionElement[OR_GATE]);
-                checkUp(i, j);
-                checkDown(i, j);
-                break;
-            
-            case AND_GATE:
-                boolExpression.insert(boolExpression.end(), 1, expressionElement[AND_GATE]);
-                checkUp(i, j);
-                checkDown(i, j);
-                break;
+    case OR_GATE:
+        result = "( + )";
+        result.replace(1, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 1));
+        result.replace(result.size() - 2, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 0));
+        break;
+    
+    case AND_GATE:
+        result = " * ";
+        result.replace(0, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 1));
+        result.replace(result.size() - 1, 1, exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType(), 0));
+        break;
 
-            default:
-                break;
-            }
-        }
+    case GATE_INPUT:
+        result = (up ? exp2(x_ - 1, y_, cells[x_][y_]->getCurrentType()) : exp2(x_ + 1, y_, cells[x_][y_]->getCurrentType()));
+        break;
+
+    case WIRE_CORNER_LEFT:
+        result = exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType());
+        break;
+
+    case WIRE_CORNER_RIGHT:
+        result = exp2(x_, y_ - 1, cells[x_][y_]->getCurrentType());
+        break;
+
+    case SIGNAL_IN_A:
+        result = "A";
+        break;
+    default:
+        break;
     }
+    return result;
 }
