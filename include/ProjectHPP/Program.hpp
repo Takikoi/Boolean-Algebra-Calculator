@@ -10,7 +10,7 @@ class Program
 private:
     // Core
     std::string title;
-    int FPS = 120;
+    int FPS = 60;
     sf::VideoMode windowBounds;                 // window dimension
     sf::VideoMode screenBounds;                 // screen resolution
     sf::RenderWindow* window;

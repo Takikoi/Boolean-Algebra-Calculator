@@ -75,6 +75,8 @@ ProgramState::~ProgramState()
     for (short i = 0; i < NUM_CELLS; ++i)
         delete[] cells[i];
     delete[] cells;
+
+    delete expression;
 }
 
 ProgramState::ProgramState(sf::RenderWindow* window_) 
@@ -104,26 +106,26 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
                 static bool lock_click_right = false;
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == false)
                 {
-                    std::cout << "lmb-pressed" << std::endl; // usually this will show in a loop because is being pressed;
+                    //std::cout << "lmb-pressed" << std::endl; // usually this will show in a loop because is being pressed;
                     lock_click_left = true; //And now, after all your code, this will lock the loop and not print "lmb" in a x held time. 
 
                 }
                 else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == true)
                 {
-                    std::cout << "lmb-released" << std::endl;
+                    //std::cout << "lmb-released" << std::endl;
                     lock_click_left = false; //unlock when the button(lmb) has been released.
 
                     cells[i][j]->changeToNextType();
                 }
                 else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && lock_click_right == false)
                 {
-                    std::cout << "rmb-pressed" << std::endl; // usually this will show in a loop because is being pressed;
+                    //std::cout << "rmb-pressed" << std::endl; // usually this will show in a loop because is being pressed;
                     lock_click_right = true; //And now, after all your code, this will lock the loop and not print "lmb" in a x held time. 
 
                 }
                 else if (!sf::Mouse::isButtonPressed(sf::Mouse::Right) && lock_click_right == true)
                 {
-                    std::cout << "rmb-released" << std::endl;
+                    //std::cout << "rmb-released" << std::endl;
                     lock_click_right = false; //unlock when the button(lmb) has been released.
 
                     cells[i][j]->changeToPreviousType();
@@ -152,7 +154,6 @@ void ProgramState::render(sf::RenderTarget* target_)
             cells[i][j]->render(target_);
         }
     }
-    //cells[0][0]->render(target_);
 }
 
 // ######################################################################## (Program functions)
