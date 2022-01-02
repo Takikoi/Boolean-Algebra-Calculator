@@ -9,8 +9,11 @@
 
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
-extern int NUM_CELLS;
-extern int CELL_SIZE;
+
+extern const int CELL_FIELD_DIM_X;
+extern const int CELL_FIELD_DIM_Y;
+
+extern const int CELL_SIZE;
 
 enum CellType : unsigned char 
 {
@@ -36,11 +39,4 @@ enum CellType : unsigned char
     SIGNAL_OUT_1,
     SIGNAL_OUT_2,
     SIGNAL_OUT_3
-};
-
-enum MouseClick : unsigned char
-{
-    LEFT,
-    MIDDLE,
-    RIGHT,
 };

@@ -3,5 +3,7 @@
 int WINDOW_WIDTH = 960;
 int WINDOW_HEIGHT = 1010;
 
-int NUM_CELLS = 15;
-int CELL_SIZE = WINDOW_WIDTH / NUM_CELLS;
+const int CELL_FIELD_DIM_X = 15;
+const int CELL_FIELD_DIM_Y = 14;
+
+const int CELL_SIZE = 64;

@@ -14,15 +14,17 @@ private:
     
 
     Cell*** cells;
+    Cell testCell;
     std::vector<CellType> cellType;
     unsigned short iterator = 0;
     bool cellSelected;
 
-    BoolExpression* expression;
+    BoolExpression expression;
 
     void initCells();
     void initCellType();
     void initExpElement();
+    
 protected:
     // std::vector<sf::Texture> textures;
     // sf::Vector2i mousePos;
@@ -37,9 +39,5 @@ public:
 
     void update(const float& dtTime_, const sf::Vector2i& mousePos_);
     void render(sf::RenderTarget* target_ = NULL);
-
-    std::string generateExpression();
-    std::string exp(short x_, short y_, short flag);
-    std::string exp2(short x_, short y_, bool up = 1);
 };
 

@@ -47,45 +47,48 @@ void ProgramState::initCellType()
 void ProgramState::initCells()
 {
     // Allocate cells matrix
-    cells = new Cell** [NUM_CELLS];
-    for (short i = 0; i < NUM_CELLS; ++i)
-        cells[i] = new Cell*[NUM_CELLS];
+    cells = new Cell** [CELL_FIELD_DIM_X];
+    for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
+        cells[i] = new Cell*[CELL_FIELD_DIM_Y];
 
     // Create Cells matrix
     short x(0), y(0);
-    for (short i = 0; i < NUM_CELLS; ++i)
+    for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
     {
-        for (short j = 0; j < NUM_CELLS; ++j)
+        for (short j = 0; j < CELL_FIELD_DIM_Y; ++j)
         {
             cells[i][j] = new Cell(sf::Vector2f(x, y));
-            x += CELL_SIZE;
+            y += CELL_SIZE;
         }
-        x = 0;
-        y += CELL_SIZE;
+        y = 0;
+        x += CELL_SIZE;
     }
 }
 
 ProgramState::~ProgramState()
 {
     // Do not call delete window
-    for (short i = 0; i < NUM_CELLS; ++i)
-        for (short j = 0; j < NUM_CELLS; ++j)
+    for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
+        for (short j = 0; j < CELL_FIELD_DIM_Y; ++j)
             delete cells[i][j];
     
-    for (short i = 0; i < NUM_CELLS; ++i)
+    for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
         delete[] cells[i];
     delete[] cells;
-
-    delete expression;
 }
 
 ProgramState::ProgramState(sf::RenderWindow* window_) 
     : State(), window(window_)
 {
+    // Init list will init in the order of object in class declaration not of the list
     initCellType();
     initCells();
     initExpElement();
-    expression = new BoolExpression(cells);
+
+    // expression must be init after cells
+    expression = BoolExpression(cells);
+
+    testCell = Cell(sf::Vector2f(100, 50));
 }
 
 // ######################################################################## (Main Update & Render)
@@ -95,9 +98,9 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
     updateInput(dtTime_, mousePos_);
     
     // Check Mouse Single-click
-    for (short i = 0; i < NUM_CELLS; ++i)
+    for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
     {
-        for (short j = 0; j < NUM_CELLS; ++j)
+        for (short j = 0; j < CELL_FIELD_DIM_Y; ++j)
         {
             if (cells[i][j]->cursorDetected(mousePos_))
             {
@@ -140,20 +143,21 @@ void ProgramState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
     }
     else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == true)
     {
-        std::cout << "EXP: " << expression->getExpression() << "\n";
+        std::cout << "EXP: " << expression.getExpression() << "\n";
         lock_enter = false; //unlock when the button(lmb) has been released.
     }
 }
 
 void ProgramState::render(sf::RenderTarget* target_)
 {
-    for (short i = 0; i < NUM_CELLS; ++i)
+    for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
     {
-        for (short j = 0; j < NUM_CELLS; ++j)
+        for (short j = 0; j < CELL_FIELD_DIM_Y; ++j)
         {
             cells[i][j]->render(target_);
         }
     }
+    testCell.render(target_);
 }
 
 // ######################################################################## (Program functions)
@@ -166,130 +170,4 @@ void ProgramState::updateInput(const float& dtTime_, const sf::Vector2i& mousePo
 
 void ProgramState::updateMousePos(const sf::Vector2i& mousePos_) {
     mousePos = mousePos_;
-}
-
-std::string ProgramState::generateExpression()
-{
-    short i, j;
-    for (j = NUM_CELLS - 1; j >= 0; --j)
-        for (i = 0; i < NUM_CELLS; ++i)
-            if (cells[i][j]->getCurrentType() == SIGNAL_OUT_1)
-            {
-                std::cout << "Found output\n";
-                goto endLoop;
-            }
-                
-    endLoop:
-    
-    return exp2(i, j - 1, 1);
-}
-
-std::string ProgramState::exp(short x_, short y_, short flag)
-{
-    std::string result = "";
-    if (flag == 0)
-    {
-        for (short j = y_ - 2; j >= 0; --j)
-        {
-            for (short i = x_ - 1; i >= 0; --i)
-            {
-                switch (cells[i][j]->getCurrentType())
-                {
-                case OR_GATE:
-                    result = "( + )";
-                    std::cout << "(x, y): " << i << ", " << j << "\n";
-                    result.replace(1, 1, exp(i, j, 1));
-                    result.replace(result.size() - 2, 1, exp(i, j, 0));
-                    goto endLoop1;
-                    break;
-                
-                case AND_GATE:
-                    result = " * ";
-                    std::cout << "(x, y): " << i << ", " << j << "\n";
-                    result.replace(0, 1, exp(i, j, 0));
-                    goto endLoop1;
-                    break;
-
-                default:
-                    break;
-                }
-            }
-        }
-        endLoop1:
-        return result;
-    }
-    else if (flag == 1)
-    {
-        for (short j = y_ - 1; j >= 0; --j)
-        {
-            for (short i = x_ + 1; i < NUM_CELLS; ++i)
-            {
-                switch (cells[i][j]->getCurrentType())
-                {
-                case OR_GATE:
-                    result = "( + )";
-                    std::cout << "(x, y): " << i << ", " << j << "\n";
-                    result.replace(1, 1, exp(i, j, 1));
-                    result.replace(result.size() - 2, 1, exp(i, j, 0));
-                    goto endLoop2;
-                    break;
-                
-                case AND_GATE:
-                    result = " * ";
-                    std::cout << "(x, y): " << i << ", " << j << "\n";
-                    result.replace(0, 1, exp(i, j, 0));
-                    goto endLoop2;
-                    break;
-
-                default:
-                    break;
-                }
-            }
-        }
-        endLoop2:
-        return result;
-    }
-}
-
-std::string ProgramState::exp2(short x_, short y_, bool up)
-{
-    std::string result = "";
-    switch (cells[x_][y_]->getCurrentType())
-    {
-    case OR_GATE:
-        result = "( + )";
-        result.replace(1, 1, exp2(x_, y_ - 1, 1));
-        result.replace(result.size() - 2, 1, exp2(x_, y_ - 1, 0));
-        break;
-    
-    case AND_GATE:
-        result = " * ";
-        result.replace(0, 1, exp2(x_, y_ - 1, 1));
-        result.replace(result.size() - 1, 1, exp2(x_, y_ - 1, 0));
-        break;
-
-    case NOT_GATE:
-        result = "( )'";
-        result.replace(1, 1, exp2(x_, y_ - 1));
-        break;
-
-    case GATE_INPUT:
-        result = (up ? exp2(x_ - 1, y_) : exp2(x_ + 1, y_));
-        break;
-
-    case WIRE_CORNER_LEFT:
-        result = exp2(x_, y_ - 1);
-        break;
-
-    case WIRE_CORNER_RIGHT:
-        result = exp2(x_, y_ - 1);
-        break;
-
-    case SIGNAL_IN_A:
-        result = "A";
-        break;
-    default:
-        break;
-    }
-    return result;
 }

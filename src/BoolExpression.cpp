@@ -3,6 +3,7 @@
 BoolExpression::~BoolExpression()
 {
     // do not delete cells here
+    std::cout << "BoolExp deleted\n";
 }
 
 BoolExpression::BoolExpression()
@@ -21,14 +22,14 @@ std::string BoolExpression::getExpression()
     // std::cout << "pos: " << outputPos.x << ", " << outputPos.y << "\n";
     check_ValidNeighboringCells();
     std::cout << "Valid? : " << valid << "\n";
-    return generateExpression(outputPos.x, outputPos.y - 1);
+    return generateExpression(outputPos.x - 1, outputPos.y);
 }
 
 sf::Vector2i BoolExpression::getOutputCellPosition()
 {
     sf::Vector2i pos(0, 0);
-    for (pos.y = NUM_CELLS - 1; pos.y >= 0; --pos.y)
-        for (pos.x = 0; pos.x < NUM_CELLS; ++pos.x)
+    for (pos.x = CELL_FIELD_DIM_X - 1; pos.x >= 0; --pos.x)
+        for (pos.y = 0; pos.y < CELL_FIELD_DIM_Y; ++pos.y)
             if (cells[pos.x][pos.y]->getCurrentType() == SIGNAL_OUT_1)
             {
                 return pos;
@@ -37,122 +38,125 @@ sf::Vector2i BoolExpression::getOutputCellPosition()
     return sf::Vector2i(-1, 0);
 }
 
-void BoolExpression::check_CellContinuity()
-{}
-
 void BoolExpression::check_ValidNeighboringCells()
 {
-    for (short i = 0; i < NUM_CELLS; ++i)
+    for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
     {
-        for (short j = 0; j < NUM_CELLS; ++j)
+        for (short j = 0; j < CELL_FIELD_DIM_Y; ++j)
         {
             if (cells[i][j]->getCurrentType() != EMPTY_CELL)
             {    
+                
                 std::cout << i << ", " << j << "\n";
-                std::cout << "CellType: " << (short)cells[i][j]->getCurrentType() << "\n";
 
                 valid = false;
+
+                unsigned char right  = cells[i + 1][j]->getCurrentType();
+                unsigned char left   = cells[i - 1][j]->getCurrentType();
+                unsigned char top    = cells[i][j - 1]->getCurrentType();
+                unsigned char bottom = cells[i][j + 1]->getCurrentType();
+
                 switch (cells[i][j]->getCurrentType())
                 {
                 case OR_GATE:
                 case AND_GATE:
-                    if ((cells[i][j + 1]->getCurrentType() == SIGNAL_OUT_1 
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_VERTICAL 
-                    ||   cells[i][j + 1]->getCurrentType() == NOT_GATE 
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_CORNER_LEFT
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_CORNER_RIGHT) 
+                    if ((right == SIGNAL_OUT_1 
+                    ||   right == WIRE_VERTICAL 
+                    ||   right == NOT_GATE 
+                    ||   right == WIRE_CORNER_LEFT
+                    ||   right == WIRE_CORNER_RIGHT) 
 
                     &&  
-                        (cells[i][j - 1]->getCurrentType() == GATE_INPUT))
+                        (left == GATE_INPUT))
                         valid = true;
                     break;
                 
                 case NOT_GATE:
                 case WIRE_VERTICAL:
-                    if ((cells[i][j + 1]->getCurrentType() == SIGNAL_OUT_1 
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_VERTICAL 
-                    ||   cells[i][j + 1]->getCurrentType() == NOT_GATE 
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_CORNER_LEFT
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_CORNER_RIGHT)
+                    if ((right == SIGNAL_OUT_1 
+                    ||   right == WIRE_VERTICAL 
+                    ||   right == NOT_GATE 
+                    ||   right == WIRE_CORNER_LEFT
+                    ||   right == WIRE_CORNER_RIGHT)
 
                     &&  
-                        (cells[i][j - 1]->getCurrentType() == SIGNAL_IN_A 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_B
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_C
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_D
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_E
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_F 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_G
-                    ||   cells[i][j - 1]->getCurrentType() == OR_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == AND_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == NOT_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == WIRE_VERTICAL ))
+                        (left == SIGNAL_IN_A 
+                    ||   left == SIGNAL_IN_B
+                    ||   left == SIGNAL_IN_C
+                    ||   left == SIGNAL_IN_D
+                    ||   left == SIGNAL_IN_E
+                    ||   left == SIGNAL_IN_F 
+                    ||   left == SIGNAL_IN_G
+                    ||   left == OR_GATE
+                    ||   left == AND_GATE
+                    ||   left == NOT_GATE
+                    ||   left == WIRE_VERTICAL ))
                         valid = true;
                     break;
 
                 case WIRE_HORIZONTAL:
-                    if ((cells[i - 1][j]->getCurrentType() == WIRE_CORNER_LEFT
-                    ||   cells[i - 1][j]->getCurrentType() == WIRE_HORIZONTAL
-                    ||   cells[i - 1][j]->getCurrentType() == GATE_INPUT)
+                    if ((top == WIRE_CORNER_LEFT
+                    ||   top == WIRE_HORIZONTAL
+                    ||   top == GATE_INPUT)
                     
                     &&
-                        (cells[i + 1][j]->getCurrentType() == WIRE_CORNER_RIGHT
-                    ||   cells[i + 1][j]->getCurrentType() == WIRE_HORIZONTAL
-                    ||   cells[i - 1][j]->getCurrentType() == GATE_INPUT))
+                        (bottom == WIRE_CORNER_RIGHT
+                    ||   bottom == WIRE_HORIZONTAL
+                    ||   bottom == GATE_INPUT))
                         valid = true;
                     break;    
                 
                 case GATE_INPUT:
-                    if ((cells[i][j + 1]->getCurrentType() == OR_GATE
-                    ||   cells[i][j + 1]->getCurrentType() == AND_GATE)
+                    if ((right == OR_GATE
+                    ||   right == AND_GATE)
                     
                     &&
-                        (cells[i - 1][j]->getCurrentType() == WIRE_CORNER_LEFT
-                    ||   cells[i - 1][j]->getCurrentType() == WIRE_HORIZONTAL)
+                        (top == WIRE_CORNER_LEFT
+                    ||   top == WIRE_HORIZONTAL)
                     
                     &&
-                        (cells[i + 1][j]->getCurrentType() == WIRE_CORNER_RIGHT
-                    ||   cells[i + 1][j]->getCurrentType() == WIRE_HORIZONTAL))
+                        (bottom == WIRE_CORNER_RIGHT
+                    ||   bottom == WIRE_HORIZONTAL))
                         valid = true;
                     break;
 
                 case WIRE_CORNER_LEFT:
-                    if ((cells[i][j - 1]->getCurrentType() == SIGNAL_IN_A 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_B
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_C
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_D
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_E
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_F 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_G
-                    ||   cells[i][j - 1]->getCurrentType() == OR_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == AND_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == NOT_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == WIRE_VERTICAL)
+                    if ((left == SIGNAL_IN_A 
+                    ||   left == SIGNAL_IN_B
+                    ||   left == SIGNAL_IN_C
+                    ||   left == SIGNAL_IN_D
+                    ||   left == SIGNAL_IN_E
+                    ||   left == SIGNAL_IN_F 
+                    ||   left == SIGNAL_IN_G
+                    ||   left == OR_GATE
+                    ||   left == AND_GATE
+                    ||   left == NOT_GATE
+                    ||   left == WIRE_VERTICAL)
                     
                     &&
-                        (cells[i + 1][j]->getCurrentType() == WIRE_CORNER_RIGHT
-                    ||   cells[i + 1][j]->getCurrentType() == WIRE_HORIZONTAL
-                    ||   cells[i + 1][j]->getCurrentType() == GATE_INPUT))
+                        (bottom == WIRE_CORNER_RIGHT
+                    ||   bottom == WIRE_HORIZONTAL
+                    ||   bottom == GATE_INPUT))
                         valid = true;
                     break;
 
                 case WIRE_CORNER_RIGHT:
-                    if ((cells[i][j - 1]->getCurrentType() == SIGNAL_IN_A 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_B
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_C
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_D
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_E
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_F 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_G
-                    ||   cells[i][j - 1]->getCurrentType() == OR_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == AND_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == NOT_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == WIRE_VERTICAL)
+                    if ((left == SIGNAL_IN_A 
+                    ||   left == SIGNAL_IN_B
+                    ||   left == SIGNAL_IN_C
+                    ||   left == SIGNAL_IN_D
+                    ||   left == SIGNAL_IN_E
+                    ||   left == SIGNAL_IN_F 
+                    ||   left == SIGNAL_IN_G
+                    ||   left == OR_GATE
+                    ||   left == AND_GATE
+                    ||   left == NOT_GATE
+                    ||   left == WIRE_VERTICAL)
                     
                     &&
-                        (cells[i - 1][j]->getCurrentType() == WIRE_CORNER_LEFT
-                    ||   cells[i - 1][j]->getCurrentType() == WIRE_HORIZONTAL
-                    ||   cells[i - 1][j]->getCurrentType() == GATE_INPUT))
+                        (top == WIRE_CORNER_LEFT
+                    ||   top == WIRE_HORIZONTAL
+                    ||   top == GATE_INPUT))
                         valid = true;
                     break;
                     
@@ -163,29 +167,30 @@ void BoolExpression::check_ValidNeighboringCells()
                 case SIGNAL_IN_E:
                 case SIGNAL_IN_F:
                 case SIGNAL_IN_G:
-                    if ((cells[i][j + 1]->getCurrentType() == SIGNAL_OUT_1 
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_VERTICAL 
-                    ||   cells[i][j + 1]->getCurrentType() == NOT_GATE 
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_CORNER_LEFT
-                    ||   cells[i][j + 1]->getCurrentType() == WIRE_CORNER_RIGHT))
+                    if ((right == SIGNAL_OUT_1 
+                    ||   right == WIRE_VERTICAL 
+                    ||   right == NOT_GATE 
+                    ||   right == WIRE_CORNER_LEFT
+                    ||   right == WIRE_CORNER_RIGHT))
                         valid = true;
                     break;
                 
                 case SIGNAL_OUT_1:
-                    if  (cells[i][j - 1]->getCurrentType() == SIGNAL_IN_A 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_B
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_C
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_D
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_E
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_F 
-                    ||   cells[i][j - 1]->getCurrentType() == SIGNAL_IN_G
-                    ||   cells[i][j - 1]->getCurrentType() == OR_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == AND_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == NOT_GATE
-                    ||   cells[i][j - 1]->getCurrentType() == WIRE_VERTICAL)
+                    if  (left == SIGNAL_IN_A 
+                    ||   left == SIGNAL_IN_B
+                    ||   left == SIGNAL_IN_C
+                    ||   left == SIGNAL_IN_D
+                    ||   left == SIGNAL_IN_E
+                    ||   left == SIGNAL_IN_F 
+                    ||   left == SIGNAL_IN_G
+                    ||   left == OR_GATE
+                    ||   left == AND_GATE
+                    ||   left == NOT_GATE
+                    ||   left == WIRE_VERTICAL)
                         valid = true;
                     break;
                 }
+
                 if (!valid) goto exit_loop;
             }   
         }
@@ -205,31 +210,31 @@ std::string BoolExpression::generateExpression(short x_, short y_, bool checkUpw
         // LOGIC GATES
             case OR_GATE:
                 result = "( + )";
-                result.replace(1, 1, generateExpression(x_, y_ - 1, true));
-                result.replace(result.size() - 2, 1, generateExpression(x_, y_ - 1, false));
+                result.replace(1, 1, generateExpression(x_ - 1, y_, true));
+                result.replace(result.size() - 2, 1, generateExpression(x_ - 1, y_, false));
                 break;
             
             case AND_GATE:
                 result = " * ";
-                result.replace(0, 1, generateExpression(x_, y_ - 1, true));
-                result.replace(result.size() - 1, 1, generateExpression(x_, y_ - 1, false));
+                result.replace(0, 1, generateExpression(x_ - 1, y_, true));
+                result.replace(result.size() - 1, 1, generateExpression(x_ - 1, y_, false));
                 break;
 
             case NOT_GATE:
                 result = "( )'";
-                result.replace(1, 1, generateExpression(x_, y_ - 1));
+                result.replace(1, 1, generateExpression(x_ - 1, y_));
                 break;
 
         // CONNECTION WIRE
             case GATE_INPUT:
             case WIRE_HORIZONTAL:
-                result = (checkUpward_ ? generateExpression(x_ - 1, y_, true) : generateExpression(x_ + 1, y_, false));
+                result = (checkUpward_ ? generateExpression(x_, y_ - 1, true) : generateExpression(x_, y_ + 1, false));
                 break;
 
             case WIRE_CORNER_LEFT:
             case WIRE_CORNER_RIGHT:
             case WIRE_VERTICAL:
-                result = generateExpression(x_, y_ - 1);
+                result = generateExpression(x_ - 1, y_);
                 break;
 
             case SIGNAL_IN_A:

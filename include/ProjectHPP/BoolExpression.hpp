@@ -21,7 +21,6 @@ public:
     std::string getExpression();
 
     sf::Vector2i getOutputCellPosition();
-    void check_CellContinuity();
     void check_ValidNeighboringCells();
     std::string generateExpression(short x_, short y_, bool checkUpward_ = true);
 };

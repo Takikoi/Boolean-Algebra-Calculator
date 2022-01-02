@@ -2,7 +2,7 @@
 
 void Cell::initVariables()
 {
-    rec.setSize(sf::Vector2f((float)WINDOW_WIDTH / NUM_CELLS, (float)WINDOW_WIDTH / NUM_CELLS));
+    rec.setSize(sf::Vector2f((float)CELL_SIZE, (float)CELL_SIZE));
     rec.setFillColor(sf::Color::Cyan);
 }
 
