@@ -21,11 +21,19 @@ private:
 
     BoolExpression expression;
 
+    sf::Texture UI_barTexture;
+    sf::Sprite UI_bar;
+
+    sf::Texture backButtonTexture;
+    sf::Sprite backButton;
+
     void initCells();
     void initCellType();
     void initExpElement();
+    void initTexture();
     
 protected:
+    
     // std::vector<sf::Texture> textures;
     // sf::Vector2i mousePos;
     // bool quit;

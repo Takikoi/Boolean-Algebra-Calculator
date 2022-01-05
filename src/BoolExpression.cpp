@@ -46,118 +46,143 @@ void BoolExpression::check_ValidNeighboringCells()
         {
             if (cells[i][j]->getCurrentType() != EMPTY_CELL)
             {    
-                
                 std::cout << i << ", " << j << "\n";
 
                 valid = false;
+                
+                unsigned char right(0), left(0), top(0), bottom(0);
+                if (i != (CELL_FIELD_DIM_X - 1))
+                    right = cells[i + 1][j]->getCurrentType();
 
-                unsigned char right  = cells[i + 1][j]->getCurrentType();
-                unsigned char left   = cells[i - 1][j]->getCurrentType();
-                unsigned char top    = cells[i][j - 1]->getCurrentType();
-                unsigned char bottom = cells[i][j + 1]->getCurrentType();
+                if (i != 0)
+                    left = cells[i - 1][j]->getCurrentType();
+
+                if (j != 0)
+                    top = cells[i][j - 1]->getCurrentType();
+
+                if (j != (CELL_FIELD_DIM_Y - 1))
+                    bottom = cells[i][j + 1]->getCurrentType();
 
                 switch (cells[i][j]->getCurrentType())
                 {
                 case OR_GATE:
                 case AND_GATE:
-                    if ((right == SIGNAL_OUT_1 
-                    ||   right == WIRE_VERTICAL 
-                    ||   right == NOT_GATE 
-                    ||   right == WIRE_CORNER_LEFT
-                    ||   right == WIRE_CORNER_RIGHT) 
+                    if (i != 0 || j != 0 || i != (CELL_FIELD_DIM_X - 1) || j != (CELL_FIELD_DIM_Y - 1))
+                    {   
+                        if ((right == SIGNAL_OUT_1 
+                        ||   right == WIRE_VERTICAL 
+                        ||   right == NOT_GATE 
+                        ||   right == WIRE_CORNER_LEFT
+                        ||   right == WIRE_CORNER_RIGHT) 
 
-                    &&  
-                        (left == GATE_INPUT))
-                        valid = true;
+                        &&  
+                            (left == GATE_INPUT))
+                            valid = true;
+                    }
                     break;
                 
                 case NOT_GATE:
                 case WIRE_VERTICAL:
-                    if ((right == SIGNAL_OUT_1 
-                    ||   right == WIRE_VERTICAL 
-                    ||   right == NOT_GATE 
-                    ||   right == WIRE_CORNER_LEFT
-                    ||   right == WIRE_CORNER_RIGHT)
+                    if (i != 0 || i != (CELL_FIELD_DIM_X - 1))
+                    {
+                        if ((right == SIGNAL_OUT_1 
+                        ||   right == WIRE_VERTICAL 
+                        ||   right == NOT_GATE 
+                        ||   right == WIRE_CORNER_LEFT
+                        ||   right == WIRE_CORNER_RIGHT)
 
-                    &&  
-                        (left == SIGNAL_IN_A 
-                    ||   left == SIGNAL_IN_B
-                    ||   left == SIGNAL_IN_C
-                    ||   left == SIGNAL_IN_D
-                    ||   left == SIGNAL_IN_E
-                    ||   left == SIGNAL_IN_F 
-                    ||   left == SIGNAL_IN_G
-                    ||   left == OR_GATE
-                    ||   left == AND_GATE
-                    ||   left == NOT_GATE
-                    ||   left == WIRE_VERTICAL ))
-                        valid = true;
+                        &&  
+                            (left == SIGNAL_IN_A 
+                        ||   left == SIGNAL_IN_B
+                        ||   left == SIGNAL_IN_C
+                        ||   left == SIGNAL_IN_D
+                        ||   left == SIGNAL_IN_E
+                        ||   left == SIGNAL_IN_F 
+                        ||   left == SIGNAL_IN_G
+                        ||   left == OR_GATE
+                        ||   left == AND_GATE
+                        ||   left == NOT_GATE
+                        ||   left == WIRE_VERTICAL ))
+                            valid = true;
+                    }
                     break;
 
                 case WIRE_HORIZONTAL:
-                    if ((top == WIRE_CORNER_LEFT
-                    ||   top == WIRE_HORIZONTAL
-                    ||   top == GATE_INPUT)
-                    
-                    &&
-                        (bottom == WIRE_CORNER_RIGHT
-                    ||   bottom == WIRE_HORIZONTAL
-                    ||   bottom == GATE_INPUT))
-                        valid = true;
+                    if (i != 0 || j != 0 || i != (CELL_FIELD_DIM_X - 1) || j != (CELL_FIELD_DIM_Y - 1))
+                    {
+                        if ((top == WIRE_CORNER_LEFT
+                        ||   top == WIRE_HORIZONTAL
+                        ||   top == GATE_INPUT)
+                        
+                        &&
+                            (bottom == WIRE_CORNER_RIGHT
+                        ||   bottom == WIRE_HORIZONTAL
+                        ||   bottom == GATE_INPUT))
+                            valid = true;
+                    }
                     break;    
                 
                 case GATE_INPUT:
-                    if ((right == OR_GATE
-                    ||   right == AND_GATE)
-                    
-                    &&
-                        (top == WIRE_CORNER_LEFT
-                    ||   top == WIRE_HORIZONTAL)
-                    
-                    &&
-                        (bottom == WIRE_CORNER_RIGHT
-                    ||   bottom == WIRE_HORIZONTAL))
-                        valid = true;
+                    if (i != 0 || j != 0 || i != (CELL_FIELD_DIM_X - 1) || j != (CELL_FIELD_DIM_Y - 1))
+                    {
+                        if ((right == OR_GATE
+                        ||   right == AND_GATE)
+                        
+                        &&
+                            (top == WIRE_CORNER_LEFT
+                        ||   top == WIRE_HORIZONTAL)
+                        
+                        &&
+                            (bottom == WIRE_CORNER_RIGHT
+                        ||   bottom == WIRE_HORIZONTAL))
+                            valid = true;
+                    }
                     break;
 
                 case WIRE_CORNER_LEFT:
-                    if ((left == SIGNAL_IN_A 
-                    ||   left == SIGNAL_IN_B
-                    ||   left == SIGNAL_IN_C
-                    ||   left == SIGNAL_IN_D
-                    ||   left == SIGNAL_IN_E
-                    ||   left == SIGNAL_IN_F 
-                    ||   left == SIGNAL_IN_G
-                    ||   left == OR_GATE
-                    ||   left == AND_GATE
-                    ||   left == NOT_GATE
-                    ||   left == WIRE_VERTICAL)
-                    
-                    &&
-                        (bottom == WIRE_CORNER_RIGHT
-                    ||   bottom == WIRE_HORIZONTAL
-                    ||   bottom == GATE_INPUT))
-                        valid = true;
+                    if (i != 0 || i != (CELL_FIELD_DIM_X - 1) || j != (CELL_FIELD_DIM_Y - 1))
+                    {
+                        if ((left == SIGNAL_IN_A 
+                        ||   left == SIGNAL_IN_B
+                        ||   left == SIGNAL_IN_C
+                        ||   left == SIGNAL_IN_D
+                        ||   left == SIGNAL_IN_E
+                        ||   left == SIGNAL_IN_F 
+                        ||   left == SIGNAL_IN_G
+                        ||   left == OR_GATE
+                        ||   left == AND_GATE
+                        ||   left == NOT_GATE
+                        ||   left == WIRE_VERTICAL)
+                        
+                        &&
+                            (bottom == WIRE_CORNER_RIGHT
+                        ||   bottom == WIRE_HORIZONTAL
+                        ||   bottom == GATE_INPUT))
+                            valid = true;
+                    }
                     break;
 
                 case WIRE_CORNER_RIGHT:
-                    if ((left == SIGNAL_IN_A 
-                    ||   left == SIGNAL_IN_B
-                    ||   left == SIGNAL_IN_C
-                    ||   left == SIGNAL_IN_D
-                    ||   left == SIGNAL_IN_E
-                    ||   left == SIGNAL_IN_F 
-                    ||   left == SIGNAL_IN_G
-                    ||   left == OR_GATE
-                    ||   left == AND_GATE
-                    ||   left == NOT_GATE
-                    ||   left == WIRE_VERTICAL)
-                    
-                    &&
-                        (top == WIRE_CORNER_LEFT
-                    ||   top == WIRE_HORIZONTAL
-                    ||   top == GATE_INPUT))
-                        valid = true;
+                    if (i != 0 || j != 0 || i != (CELL_FIELD_DIM_X - 1))
+                    {
+                        if ((left == SIGNAL_IN_A 
+                        ||   left == SIGNAL_IN_B
+                        ||   left == SIGNAL_IN_C
+                        ||   left == SIGNAL_IN_D
+                        ||   left == SIGNAL_IN_E
+                        ||   left == SIGNAL_IN_F 
+                        ||   left == SIGNAL_IN_G
+                        ||   left == OR_GATE
+                        ||   left == AND_GATE
+                        ||   left == NOT_GATE
+                        ||   left == WIRE_VERTICAL)
+                        
+                        &&
+                            (top == WIRE_CORNER_LEFT
+                        ||   top == WIRE_HORIZONTAL
+                        ||   top == GATE_INPUT))
+                            valid = true;
+                    }
                     break;
                     
                 case SIGNAL_IN_A:
@@ -167,27 +192,33 @@ void BoolExpression::check_ValidNeighboringCells()
                 case SIGNAL_IN_E:
                 case SIGNAL_IN_F:
                 case SIGNAL_IN_G:
-                    if ((right == SIGNAL_OUT_1 
-                    ||   right == WIRE_VERTICAL 
-                    ||   right == NOT_GATE 
-                    ||   right == WIRE_CORNER_LEFT
-                    ||   right == WIRE_CORNER_RIGHT))
-                        valid = true;
+                    if (i != (CELL_FIELD_DIM_X - 1))
+                    {
+                        if ((right == SIGNAL_OUT_1 
+                        ||   right == WIRE_VERTICAL 
+                        ||   right == NOT_GATE 
+                        ||   right == WIRE_CORNER_LEFT
+                        ||   right == WIRE_CORNER_RIGHT))
+                            valid = true;
+                    }
                     break;
                 
                 case SIGNAL_OUT_1:
-                    if  (left == SIGNAL_IN_A 
-                    ||   left == SIGNAL_IN_B
-                    ||   left == SIGNAL_IN_C
-                    ||   left == SIGNAL_IN_D
-                    ||   left == SIGNAL_IN_E
-                    ||   left == SIGNAL_IN_F 
-                    ||   left == SIGNAL_IN_G
-                    ||   left == OR_GATE
-                    ||   left == AND_GATE
-                    ||   left == NOT_GATE
-                    ||   left == WIRE_VERTICAL)
-                        valid = true;
+                    if (i != 0)
+                    {
+                        if  (left == SIGNAL_IN_A 
+                        ||   left == SIGNAL_IN_B
+                        ||   left == SIGNAL_IN_C
+                        ||   left == SIGNAL_IN_D
+                        ||   left == SIGNAL_IN_E
+                        ||   left == SIGNAL_IN_F 
+                        ||   left == SIGNAL_IN_G
+                        ||   left == OR_GATE
+                        ||   left == AND_GATE
+                        ||   left == NOT_GATE
+                        ||   left == WIRE_VERTICAL)
+                            valid = true;
+                    }
                     break;
                 }
 

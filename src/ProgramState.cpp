@@ -52,7 +52,7 @@ void ProgramState::initCells()
         cells[i] = new Cell*[CELL_FIELD_DIM_Y];
 
     // Create Cells matrix
-    short x(0), y(0);
+    short x(0), y(WINDOW_HEIGHT - CELL_SIZE * CELL_FIELD_DIM_Y);
     for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
     {
         for (short j = 0; j < CELL_FIELD_DIM_Y; ++j)
@@ -60,9 +60,21 @@ void ProgramState::initCells()
             cells[i][j] = new Cell(sf::Vector2f(x, y));
             y += CELL_SIZE;
         }
-        y = 0;
+        y = WINDOW_HEIGHT - CELL_SIZE * CELL_FIELD_DIM_Y;
         x += CELL_SIZE;
     }
+}
+
+void ProgramState::initTexture()
+{
+    UI_barTexture.loadFromFile("../assets/UI.png");
+    UI_bar.setTexture(UI_barTexture);
+    
+    backButtonTexture.loadFromFile("../assets/ToolbarButton.png");
+    backButton.setTexture(backButtonTexture);
+
+    backButton.setTextureRect(sf::IntRect(0, 0, 76, 34));
+    backButton.setPosition(16, 16);
 }
 
 ProgramState::~ProgramState()
@@ -84,10 +96,10 @@ ProgramState::ProgramState(sf::RenderWindow* window_)
     initCellType();
     initCells();
     initExpElement();
+    initTexture();
 
     // expression must be init after cells
     expression = BoolExpression(cells);
-
     testCell = Cell(sf::Vector2f(100, 50));
 }
 
@@ -157,7 +169,9 @@ void ProgramState::render(sf::RenderTarget* target_)
             cells[i][j]->render(target_);
         }
     }
-    testCell.render(target_);
+    target_->draw(UI_bar);
+    // target_->draw(backButton);
+    //testCell.render(target_);
 }
 
 // ######################################################################## (Program functions)
