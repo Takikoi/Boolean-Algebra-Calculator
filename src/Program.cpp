@@ -15,12 +15,12 @@ void Program::initWindow()
 
 void Program::initStates()
 {
-    programState = new ProgramState(window);
+    graphicInputState = new GraphicInputState(window);
 }
 
 Program::~Program() 
 {
-    delete programState;
+    delete graphicInputState;
     delete window;
 }
 
@@ -44,7 +44,7 @@ void Program::update()
     updateWindowPos();
     updateMousePos();
 
-    programState->update(dtTime, mousePos);
+    graphicInputState->update(dtTime, mousePos);
     
 }
 
@@ -53,7 +53,7 @@ void Program::render()
     window->clear(sf::Color::White);
 
     // Render Objects
-    programState->render(window);
+    graphicInputState->render(window);
 
     window->display();
 }
@@ -83,11 +83,13 @@ void Program::pollProgramEvent()
         case sf::Event::Closed:
             window->close();
             break;
+
         
         }
+        graphicInputState->handleEvent(ev);
     }
-}
 
+}
 void Program::updateDtTime() 
 { 
     // get the time taken to complete 1 loop of update & render

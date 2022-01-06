@@ -4,20 +4,14 @@
 #include "Cell.hpp"
 #include "BoolExpression.hpp"
 
-class ProgramState : public State
+class GraphicInputState : public State
 {
 private:
     // DO NOT delete window in this class, because other State use it too
     sf::RenderWindow* window;
-    std::map<unsigned char, std::string> expressionElement;
-    std::string boolExpression;
-    
 
     Cell*** cells;
     Cell testCell;
-    std::vector<CellType> cellType;
-    unsigned short iterator = 0;
-    bool cellSelected;
 
     BoolExpression expression;
 
@@ -27,10 +21,12 @@ private:
     sf::Texture backButtonTexture;
     sf::Sprite backButton;
 
+    sf::Text UI_log;
+    sf::Font font;
+
     void initCells();
-    void initCellType();
-    void initExpElement();
     void initTexture();
+    void initText();
     
 protected:
     
@@ -39,13 +35,15 @@ protected:
     // bool quit;
 
 public:
-    ProgramState(sf::RenderWindow* window_);
-    ~ProgramState();
+    GraphicInputState(sf::RenderWindow* window_);
+    ~GraphicInputState();
 
     void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);
     void updateMousePos(const sf::Vector2i& mousePos_);
 
     void update(const float& dtTime_, const sf::Vector2i& mousePos_);
     void render(sf::RenderTarget* target_ = NULL);
+
+    void handleEvent(sf::Event& ev_);
 };
 

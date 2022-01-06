@@ -19,7 +19,6 @@ BoolExpression::BoolExpression(Cell*** cells_)
 std::string BoolExpression::getExpression() 
 {
     sf::Vector2i outputPos = getOutputCellPosition();
-    // std::cout << "pos: " << outputPos.x << ", " << outputPos.y << "\n";
     check_ValidNeighboringCells();
     std::cout << "Valid? : " << valid << "\n";
     return generateExpression(outputPos.x - 1, outputPos.y);
@@ -34,7 +33,6 @@ sf::Vector2i BoolExpression::getOutputCellPosition()
             {
                 return pos;
             }
-    std::cout << "Output cell not found\n";
     return sf::Vector2i(-1, 0);
 }
 
@@ -302,7 +300,11 @@ std::string BoolExpression::generateExpression(short x_, short y_, bool checkUpw
             }
             return result;
         }
-        else std::cout << "Invalid circuit\n";
+        else 
+        {
+            std::cout << "Invalid circuit\n";
+            return  "Invalid circuit";
+        }
     }
     return "";
 }

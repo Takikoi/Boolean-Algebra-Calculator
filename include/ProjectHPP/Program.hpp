@@ -3,7 +3,7 @@
 #include "SYSTEM_modules.hpp"
 #include "SFML_modules.hpp"
 
-#include "ProgramState.hpp"
+#include "GraphicInputState.hpp"
 
 class Program
 {
@@ -21,7 +21,7 @@ private:
     sf::Vector2i windowPos;
     sf::Vector2i mousePos;
 
-    ProgramState* programState;                  // cannot create objects of abstract class, but pointer instead
+    GraphicInputState* graphicInputState;                  // cannot create objects of abstract class, but pointer instead
 
     void initWindow();
     void initStates();
