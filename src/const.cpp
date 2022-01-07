@@ -1,6 +1,6 @@
 #include "SYSTEM_modules.hpp"
 
-int WINDOW_WIDTH = 960;
+int WINDOW_WIDTH = 1250;
 int WINDOW_HEIGHT = 960;
 
 const int CELL_FIELD_DIM_X = 15;

@@ -26,12 +26,14 @@ void GraphicInputState::initTexture()
     UI_barTexture.loadFromFile("../assets/UI.png");
     UI_bar.setTexture(UI_barTexture);
     UI_bar.setPosition(0, 0);
-    
-    backButtonTexture.loadFromFile("../assets/ToolbarButton.png");
-    backButton.setTexture(backButtonTexture);
 
-    backButton.setTextureRect(sf::IntRect(0, 0, 76, 34));
-    backButton.setPosition(16, 16);
+    goBackButton = Button("", {76, 34}, 0, sf::Color::Transparent, sf::Color::Transparent);
+    goBackButton.loadTextureFromFile("../assets/ToolbarButton.png", sf::IntRect(0, 0, 76, 34));
+    goBackButton.setPosition({12, 15});
+
+    goForwardButton = Button("", {76, 34}, 0, sf::Color::Transparent, sf::Color::Transparent);
+    goForwardButton.loadTextureFromFile("../assets/ToolbarButton.png", sf::IntRect(0, 34, 76, 34));
+    goForwardButton.setPosition({100, 15});
 }
 
 void GraphicInputState::initText()
@@ -45,6 +47,7 @@ void GraphicInputState::initText()
     UI_log.setPosition(400, 18);
     UI_log.setString("Hello there");
 }
+
 GraphicInputState::~GraphicInputState()
 {
     // Do not call delete window
@@ -67,7 +70,6 @@ GraphicInputState::GraphicInputState(sf::RenderWindow* window_)
 
     // expression must be init after cells
     expression = BoolExpression(cells);
-    testCell = Cell(sf::Vector2f(100, 50));
 }
 
 // ######################################################################## (Main Update & Render)
@@ -83,7 +85,6 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
         {
             if (cells[i][j]->cursorDetected(mousePos_))
             {
-                //std::cout << "(" << i << ", " << j << ")\n";
                 static bool lock_click_left = false;
                 static bool lock_click_right = false;
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == false)
@@ -109,14 +110,44 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
     }
 
     static bool lock_enter = false;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == false)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && lock_enter == false)
     {
         lock_enter = true;
     }
-    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lock_enter == true)
+    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && lock_enter == true)
     {
         UI_log.setString(expression.getExpression());
         lock_enter = false;
+    }
+
+    static bool lock_goBack = false;
+    if (goBackButton.cursorDetected(mousePos_))
+    {   
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goBack == false)
+        {
+            lock_goBack = true;
+        }
+        else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goBack == true)
+        {
+            lock_goBack = false;
+            exitFlag = GO_TO_MENU;
+            UI_log.setString("goto menu");
+        }
+    }
+
+    static bool lock_goForward = false;
+    if (goForwardButton.cursorDetected(mousePos_))
+    {   
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goForward == false)
+        {
+            lock_goForward = true;
+        }
+        else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goForward == true)
+        {
+            lock_goForward = false;
+            exitFlag = GO_TO_OUTPUT;
+            UI_log.setString("goto output");
+        }
     }
 }
 
@@ -131,6 +162,8 @@ void GraphicInputState::render(sf::RenderTarget* target_)
     }
     window->draw(UI_bar);
     window->draw(UI_log);
+    goBackButton.render(window);
+    goForwardButton.render(window);
 }
 
 // ######################################################################## (Program functions)
@@ -147,10 +180,14 @@ void GraphicInputState::updateMousePos(const sf::Vector2i& mousePos_) {
 
 void GraphicInputState::handleEvent(sf::Event& ev_)
 {
-    switch (ev_.type)
-    {
-    case sf::Event::KeyPressed :
-        std::cout << "keypressed\n";
-        break;
-    }
+    // switch (ev_.type)
+    // {
+    // case sf::Event::KeyPressed :
+    //     std::cout << "keypressed\n";
+    //     break;
+    // }
+}
+
+std::string GraphicInputState::getExp() {
+    return expression.getExpression();
 }

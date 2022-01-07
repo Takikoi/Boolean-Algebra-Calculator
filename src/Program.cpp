@@ -15,12 +15,16 @@ void Program::initWindow()
 
 void Program::initStates()
 {
-    graphicInputState = new GraphicInputState(window);
+    // states.push_back(new MenuState(window));
+    states.push_back(new GraphicInputState(window));
+    //states.push_back(new OutputState(window));
 }
 
 Program::~Program() 
 {
-    delete graphicInputState;
+    for (State* iter : states)
+        delete iter;
+    
     delete window;
 }
 
@@ -44,16 +48,25 @@ void Program::update()
     updateWindowPos();
     updateMousePos();
 
-    graphicInputState->update(dtTime, mousePos);
+    
+    if (!states[iter]->getQuit())
+    {
+        states[iter]->update(dtTime, mousePos);
+    }
+    else
+    {
+        if (states[iter]->getExitFlag() == GO_TO_GRAPHIC)
+            iter++;
+    }
     
 }
 
 void Program::render()
 {
-    window->clear(sf::Color::White);
+    window->clear(sf::Color(236, 234, 234));
 
     // Render Objects
-    graphicInputState->render(window);
+    states[iter]->render(window);
 
     window->display();
 }
@@ -83,10 +96,8 @@ void Program::pollProgramEvent()
         case sf::Event::Closed:
             window->close();
             break;
-
-        
         }
-        graphicInputState->handleEvent(ev);
+        //graphicInputState->handleEvent(ev);
     }
 
 }

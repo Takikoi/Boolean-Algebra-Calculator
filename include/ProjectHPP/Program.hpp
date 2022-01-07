@@ -4,6 +4,8 @@
 #include "SFML_modules.hpp"
 
 #include "GraphicInputState.hpp"
+#include "MenuState.hpp"
+#include "OutputState.hpp"
 
 class Program
 {
@@ -21,7 +23,8 @@ private:
     sf::Vector2i windowPos;
     sf::Vector2i mousePos;
 
-    GraphicInputState* graphicInputState;                  // cannot create objects of abstract class, but pointer instead
+    std::vector<State*> states;
+    int iter = 0;
 
     void initWindow();
     void initStates();

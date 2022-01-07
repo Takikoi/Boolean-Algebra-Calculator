@@ -20,3 +20,6 @@ void State::updateMousePos()
 {
 }
 
+const unsigned char& State::getExitFlag() const {
+    return exitFlag;
+}

@@ -9,7 +9,7 @@ class State
 {
 protected:
     sf::Vector2i mousePos;
-
+    unsigned char exitFlag;
     bool quit;
 
 public:
@@ -19,6 +19,7 @@ public:
     void checkForQuit();
     virtual void updateMousePos();
     const bool& getQuit() const;
+    const unsigned char& getExitFlag() const;
 
     virtual void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;
     virtual void update(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;
