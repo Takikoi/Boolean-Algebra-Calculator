@@ -6,6 +6,7 @@
 #include "GraphicInputState.hpp"
 #include "MenuState.hpp"
 #include "OutputState.hpp"
+#include "TypeinInputState.hpp"
 
 class Program
 {

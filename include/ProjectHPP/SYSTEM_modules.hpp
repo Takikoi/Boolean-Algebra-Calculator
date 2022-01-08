@@ -41,10 +41,18 @@ enum CellType : unsigned char
     SIGNAL_OUT_3
 };
 
-enum EXIT_FLAG : unsigned char
+enum ExitFlag : unsigned char
 {
-    GO_TO_TYPEIN = 0,
+    GO_TO_TYPEIN = 50,
     GO_TO_GRAPHIC,
     GO_TO_OUTPUT,
     GO_TO_MENU
+};
+
+enum CurrentState : unsigned char
+{
+    MENU_STATE = 100,
+    TYPEIN_STATE,
+    GRAPHIC_STATE,
+    OUTPUT_STATE
 };

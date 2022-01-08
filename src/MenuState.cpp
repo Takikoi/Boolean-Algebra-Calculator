@@ -79,3 +79,5 @@ void MenuState::updateMousePos(const sf::Vector2i& mousePos_)
 
 }
 
+void MenuState::handleEvent(sf::Event& ev_)
+{}

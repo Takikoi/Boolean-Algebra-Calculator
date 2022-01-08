@@ -16,8 +16,9 @@ void Program::initWindow()
 void Program::initStates()
 {
     // states.push_back(new MenuState(window));
-    states.push_back(new GraphicInputState(window));
-    //states.push_back(new OutputState(window));
+    states.push_back(new TypeinInputState(window));
+    // states.push_back(new GraphicInputState(window));
+    // states.push_back(new OutputState(window));
 }
 
 Program::~Program() 
@@ -96,6 +97,9 @@ void Program::pollProgramEvent()
         case sf::Event::Closed:
             window->close();
             break;
+
+        case sf::Event::TextEntered:
+            states[iter]->handleEvent(ev);
         }
         //graphicInputState->handleEvent(ev);
     }

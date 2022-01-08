@@ -29,6 +29,9 @@ void Textbox::inputLogic(int charTyped)
     textbox.setString(text.str() + "_");
 }
 
+Textbox::Textbox()
+{}
+
 Textbox::Textbox(int size, sf::Color color, bool sel) 
 {
     textbox.setCharacterSize(size);
@@ -83,13 +86,13 @@ std::string Textbox::getText()
     return text.str();
 }
 
-void Textbox::render(sf::RenderWindow &window) 
+void Textbox::render(sf::RenderWindow* window) 
 {
-    window.draw(textbox);
+    window->draw(textbox);
 }
 
 // Function for event loop:
-void Textbox::typedOn(sf::Event input) 
+void Textbox::typedOn(sf::Event& input) 
 {
     if (isSelected) {
         int charTyped = input.text.unicode;

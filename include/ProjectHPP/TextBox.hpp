@@ -27,6 +27,7 @@ private:
 	// Get user input:
 	void inputLogic(int charTyped);
 public:
+	Textbox();
 	Textbox(int size, sf::Color color, bool sel);
 
 	// Make sure font is passed by reference:
@@ -44,8 +45,8 @@ public:
 
 	std::string getText();
 
-	void render(sf::RenderWindow &window);
+	void render(sf::RenderWindow* window);
 
 	// Function for event loop:
-	void typedOn(sf::Event input);
+	void typedOn(sf::Event& input);
 };

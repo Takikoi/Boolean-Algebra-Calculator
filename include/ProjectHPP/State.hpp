@@ -3,7 +3,6 @@
 #include "SYSTEM_modules.hpp"
 #include "SFML_modules.hpp"
 
-#include "Entity.hpp" 
 
 class State
 {
@@ -20,6 +19,7 @@ public:
     virtual void updateMousePos();
     const bool& getQuit() const;
     const unsigned char& getExitFlag() const;
+    virtual void handleEvent(sf::Event& ev_);
 
     virtual void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;
     virtual void update(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;
