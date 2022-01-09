@@ -24,8 +24,8 @@ private:
     sf::Vector2i windowPos;
     sf::Vector2i mousePos;
 
-    std::vector<State*> states;
-    int iter = 0;
+    std::map<unsigned char, State*> states;
+    unsigned char iter = MENU_STATE;
 
     void initWindow();
     void initStates();

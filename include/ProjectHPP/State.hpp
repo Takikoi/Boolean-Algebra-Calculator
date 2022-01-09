@@ -9,7 +9,8 @@ class State
 protected:
     sf::Vector2i mousePos;
     unsigned char exitFlag;
-    bool quit;
+    bool quit = false;
+    std::string exp = "";
 
 public:
     State();
@@ -20,6 +21,7 @@ public:
     const bool& getQuit() const;
     const unsigned char& getExitFlag() const;
     virtual void handleEvent(sf::Event& ev_);
+    virtual std::string& getExp();
 
     virtual void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;
     virtual void update(const float& dtTime_, const sf::Vector2i& mousePos_) = 0;

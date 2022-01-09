@@ -16,15 +16,23 @@ void Program::initWindow()
 void Program::initStates()
 {
     // states.push_back(new MenuState(window));
-    states.push_back(new TypeinInputState(window));
+    // states.push_back(new TypeinInputState(window));
     // states.push_back(new GraphicInputState(window));
     // states.push_back(new OutputState(window));
+
+    states.emplace(MENU_STATE, new MenuState(window));
+    states.emplace(TYPEIN_STATE, new TypeinInputState(window));
+    states.emplace(GRAPHIC_STATE, new GraphicInputState(window));
+    states.emplace(OUTPUT_STATE, new OutputState(window, ""));
+
+    // iter = OUTPUT_STATE;
 }
 
 Program::~Program() 
 {
-    for (State* iter : states)
-        delete iter;
+    // Only for C++17 & above
+    for (auto const& [key, value] : states)
+        delete value;
     
     delete window;
 }
@@ -49,15 +57,46 @@ void Program::update()
     updateWindowPos();
     updateMousePos();
 
-    
     if (!states[iter]->getQuit())
     {
         states[iter]->update(dtTime, mousePos);
     }
     else
     {
-        if (states[iter]->getExitFlag() == GO_TO_GRAPHIC)
-            iter++;
+        static float delay(0.f);
+        delay += dtTime;
+        if (delay >= 0.07f) // Ping : 70ms
+        {
+            std::string exp = "";
+            delay = 0.f;
+            switch (states[iter]->getExitFlag())
+            {
+            case GO_TO_TYPEIN:
+            iter = TYPEIN_STATE;
+                delete states[iter];
+                states[iter] = new TypeinInputState(window);
+                break;
+            
+            case GO_TO_GRAPHIC:
+                iter = GRAPHIC_STATE;
+                delete states[iter];
+                states[iter] = new GraphicInputState(window);
+                break;
+
+            case GO_TO_OUTPUT:
+                exp = states[iter]->getExp();
+                iter = OUTPUT_STATE;
+                delete states[iter];
+                states[iter] = new OutputState(window, exp);
+                break;
+
+            case GO_TO_MENU:
+                iter = MENU_STATE;
+                delete states[iter];
+                states[iter] = new MenuState(window);
+                break;
+            }
+        }
     }
     
 }

@@ -132,6 +132,8 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
             lock_goBack = false;
             exitFlag = GO_TO_MENU;
             UI_log.setString("goto menu");
+            exitFlag = GO_TO_MENU;
+            quit = true;
         }
     }
 
@@ -188,6 +190,6 @@ void GraphicInputState::handleEvent(sf::Event& ev_)
     // }
 }
 
-std::string GraphicInputState::getExp() {
-    return expression.getExpression();
-}
+// std::string GraphicInputState::getExp() {
+//     return expression.getExpression();
+// }

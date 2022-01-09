@@ -5,7 +5,9 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/include/",
-                "${workspaceFolder}/include/ProjectHPP/"
+                "${workspaceFolder}/include/ProjectHPP/",
+                "${workspaceFolder}/include/Thinh/",
+                "${workspaceFolder}/include/BurhLong/"
             ],
             "windowsSdkVersion": "10.0.17763.0",
             "compilerPath": "C:\\z_Dev\\mingw64\\bin\\gcc.exe",

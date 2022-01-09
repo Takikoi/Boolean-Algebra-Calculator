@@ -26,3 +26,7 @@ const unsigned char& State::getExitFlag() const {
 
 void State::handleEvent(sf::Event& ev_)
 {}
+
+std::string& State::getExp() {
+    return exp;
+}

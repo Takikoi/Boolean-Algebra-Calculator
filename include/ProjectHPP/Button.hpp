@@ -32,5 +32,6 @@ public:
 	bool cursorDetected(const sf::Vector2i& mousePos_);
 
 	void loadTextureFromFile(const std::string& filename_, const sf::IntRect& textureRec_);
+	void loadTextureFromFile(const std::string& filename_);
 	sf::Sprite& getSprite();
 };

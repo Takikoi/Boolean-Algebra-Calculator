@@ -76,6 +76,11 @@ void Button::loadTextureFromFile(const std::string& filename_, const sf::IntRect
     sprites.setTexture(texture);
 }
 
+void Button::loadTextureFromFile(const std::string& filename_) {
+    texture.loadFromFile(filename_);
+    sprites.setTexture(texture);
+}
+
 sf::Sprite& Button::getSprite() {
     return sprites;
 }

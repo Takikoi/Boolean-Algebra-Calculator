@@ -3,6 +3,11 @@
 #include "SYSTEM_modules.hpp"
 #include "SFML_modules.hpp"
 #include "State.hpp"
+#include "TruthTable.hpp"
+
+// Thinh's
+#include "TruthTableBool.h"
+#include "Expression.h"
 
 class OutputState : public State
 {
@@ -19,6 +24,13 @@ private:
     std::string sopStr;
     sf::Text sopTxt;
 
+    std::vector<sf::Text> inputGates;
+    Expression rawExp;
+
+    TruthTable truthTB;
+    
+    // Thinh's Code
+
     void initStuff();
     
 protected:
@@ -29,7 +41,7 @@ protected:
 
 public:
     OutputState();
-    OutputState(sf::RenderWindow* window_);
+    OutputState(sf::RenderWindow* window_, const std::string& exp_);
     ~OutputState();
 
     void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);

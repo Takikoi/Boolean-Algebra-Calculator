@@ -48,6 +48,6 @@ public:
     void render(sf::RenderTarget* target_ = NULL);
 
     void handleEvent(sf::Event& ev_);
-    std::string getExp();
+    // std::string getExp();
 };
 

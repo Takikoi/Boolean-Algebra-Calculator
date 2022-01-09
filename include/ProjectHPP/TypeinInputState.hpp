@@ -20,6 +20,10 @@ private:
     sf::Text title;
 
     Textbox textBox;
+    Button goBackButton;
+    Button enterButton;
+
+
     void initStuff();
 
 public:
@@ -33,6 +37,7 @@ public:
     void render(sf::RenderTarget* target_ = NULL);
 
     void handleEvent(sf::Event& ev_);
+    
 };
 
 

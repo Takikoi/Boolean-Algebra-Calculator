@@ -59,7 +59,10 @@
         "shared_mutex": "cpp",
         "thread": "cpp",
         "map": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "bitset": "cpp",
+        "cstring": "cpp",
+        "regex": "cpp"
     },
     "cSpell.words": [
         "SDLK"

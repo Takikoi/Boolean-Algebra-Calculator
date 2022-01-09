@@ -43,17 +43,32 @@ MenuState::MenuState(sf::RenderWindow* window_)
 
 void MenuState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
+    static bool lock_click_left1 = false;
     if (graphicInputOption.cursorDetected(mousePos_))
     {
-        static bool lock_click_left = false;
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == false)
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left1 == false)
         {
-            lock_click_left = true;
+            lock_click_left1 = true;
         }
-        else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == true)
+        else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left1 == true)
         {
-            lock_click_left = false;
-            exitFlag = GO_TO_GRAPHIC;\
+            lock_click_left1 = false;
+            exitFlag = GO_TO_GRAPHIC;
+            quit = true;
+        }
+    }
+
+    static bool lock_click_left2 = false;
+    if (typeInOption.cursorDetected(mousePos_))
+    {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left2 == false)
+        {
+            lock_click_left2 = true;
+        }
+        else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left2 == true)
+        {
+            lock_click_left2 = false;
+            exitFlag = GO_TO_TYPEIN;
             quit = true;
         }
     }
