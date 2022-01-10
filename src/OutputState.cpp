@@ -12,11 +12,11 @@ void OutputState::initStuff()
     if (rawExp.getInp().size() >= 5)
         sopTxt_maxperline = 35;
     else 
-        sopTxt_maxperline = 50;
+        sopTxt_maxperline = 45;
     
 
 
-    simplifiedExp.initialise(rawExp.getOutput(), pow(2.0, rawExp.getInp().size()), "");
+    simplifiedExp.initialise(rawExp.getOutput(), pow(2.0, rawExp.getInp().size()), rawExp.getInp());
     simplifiedExp.setPrimeImp();
 	simplifiedExp.minimise();
     simplifiedExp.displayFunctions();

@@ -13,7 +13,7 @@ void Tabulation::initialise(bool* input, int size, string inputName_) { //REWORK
 	//REWORK
 	nMin = 0;
 	int s = 1;
-	while (pow(2, s) <= size)
+	while (pow(2, s) < size)
 	{
 		s++;
 	}
@@ -78,8 +78,8 @@ void Tabulation::setPrimeImp() {
 
 void Tabulation::minimise() {
 	// prepare primeImp chart
-	//bool primeImpChart[primeImp.size()][nMin] = { {false} };
-	vector< vector<bool> > primeImpChart(primeImp.size(), vector<bool>(nMin, false));
+	bool primeImpChart[primeImp.size()][nMin] = { {false} };
+	// vector< vector<bool> > primeImpChart(primeImp.size(), vector<bool>(nMin, false));
 
 	for (int i = 0; i < primeImp.size(); ++i) {
 		for (int j = 0; j < nMin; ++j) {
@@ -227,8 +227,8 @@ void Tabulation::getPosComb(vector< set<int> >& patLogic, int level, set<int> pr
 }
 
 vector< vector< string> > Tabulation::combinePairs(vector< vector< string> > table, set<string>& primeImpTemp) {
-	//bool checked[table.size()][nMin] = { false };
-	vector< vector<bool> > checked(table.size(), vector<bool>(nMin, false));
+	bool checked[table.size()][nMin] = { false };
+	// vector< vector<bool> > checked(table.size(), vector<bool>(nMin, false));
 	vector< vector< string> > newTable(table.size() - 1);
 
 
