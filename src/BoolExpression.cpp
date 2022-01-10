@@ -250,8 +250,8 @@ std::string BoolExpression::generateExpression(short x_, short y_, bool checkUpw
                 break;
 
             case NOT_GATE:
-                result = "( )'";
-                result.replace(1, 1, generateExpression(x_ - 1, y_));
+                result = " '";
+                result.replace(0, 1, generateExpression(x_ - 1, y_));
                 break;
 
         // CONNECTION WIRE

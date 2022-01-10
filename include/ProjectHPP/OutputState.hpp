@@ -4,10 +4,15 @@
 #include "SFML_modules.hpp"
 #include "State.hpp"
 #include "TruthTable.hpp"
+#include "Button.hpp"
 
 // Thinh's
 #include "TruthTableBool.h"
 #include "Expression.h"
+
+// Long's
+#include "Tabulation.h"
+
 
 class OutputState : public State
 {
@@ -23,14 +28,19 @@ private:
 
     std::string sopStr;
     sf::Text sopTxt;
+    short sopTxt_maxperline = 35;
 
     std::vector<sf::Text> inputGates;
-    Expression rawExp;
 
-    TruthTable truthTB;
-    
     // Thinh's Code
+    Expression rawExp;
+    TruthTable truthTB; // truthTb must be init after expression
 
+    // Long's code
+    Tabulation simplifiedExp;
+
+    Button reStartButton;
+    
     void initStuff();
     
 protected:

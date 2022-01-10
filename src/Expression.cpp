@@ -59,8 +59,8 @@ string Expression::processInp() { // failed here
 }
 
 Expression::~Expression() {
-	delete[] output;
-	output = NULL;
+	// delete[] output;
+	// output = NULL;
 }
 
 string Expression::getExp() const {
@@ -275,4 +275,8 @@ void Expression::printOutput() const {
 		cout << output[i];
 	}
 	cout << endl;
+}
+
+bool* Expression::getOutput() {
+	return output;
 }

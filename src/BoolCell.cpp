@@ -18,11 +18,11 @@ BoolCell::BoolCell(const sf::Vector2f& pos_, const sf::Vector2f& size_, const sf
     outline.setSize(size_);
     outline.setPosition(pos_);
     outline.setFillColor(sf::Color::Transparent);
-    outline.setOutlineColor(sf::Color::Black);
+    outline.setOutlineColor(sf::Color(78, 78, 78));
     outline.setOutlineThickness(5);
 
     text.setFont(font_);
-    text.setColor(sf::Color::Black);
+    text.setColor(sf::Color(78, 78, 78));
     text.setString(str_);
 
     text.setPosition({pos_.x + size_.x/3, pos_.y + size_.y/4});

@@ -32,6 +32,7 @@ public:
 	string getSOP() const;
 	void printSOP() const;
 	void printOutput() const;
+	bool* getOutput();
 
 	Expression& operator=(const Expression& express);
 };

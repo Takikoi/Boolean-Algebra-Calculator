@@ -116,7 +116,8 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
     }
     else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && lock_enter == true)
     {
-        UI_log.setString(expression.getExpression());
+        exp = expression.getExpression();
+        UI_log.setString(exp);
         lock_enter = false;
     }
 
@@ -147,6 +148,7 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goForward == true)
         {
             lock_goForward = false;
+            quit = true;
             exitFlag = GO_TO_OUTPUT;
             UI_log.setString("goto output");
         }
@@ -182,14 +184,4 @@ void GraphicInputState::updateMousePos(const sf::Vector2i& mousePos_) {
 
 void GraphicInputState::handleEvent(sf::Event& ev_)
 {
-    // switch (ev_.type)
-    // {
-    // case sf::Event::KeyPressed :
-    //     std::cout << "keypressed\n";
-    //     break;
-    // }
 }
-
-// std::string GraphicInputState::getExp() {
-//     return expression.getExpression();
-// }
