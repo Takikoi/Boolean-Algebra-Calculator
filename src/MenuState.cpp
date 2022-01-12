@@ -1,5 +1,19 @@
 #include "MenuState.hpp"
 
+void MenuState::initUI()
+{
+    if (!backGroundTexture.loadFromFile("../assets/MenuBG.png"))
+        std::cout << "Failed to load texture\n";
+    backGround.setTexture(backGroundTexture);
+
+    title.setFont(font);
+    title.setCharacterSize(70);
+    title.setPosition({200, 200});
+    title.setColor(sf::Color(78, 78, 78));
+    title.setStyle(sf::Text::Bold);
+    title.setString("BOOLEAN  ALGEBRA\n     CALCULATOR");
+}
+
 void MenuState::initButtons()
 {
     if (!font.loadFromFile("../fonts/Orbitron-Medium.ttf"))
@@ -12,31 +26,17 @@ void MenuState::initButtons()
     graphicInputOption = Button("Graphic", {200, 100}, 24, sf::Color::Black, sf:: Color::White);
     graphicInputOption.setFont(font);
     graphicInputOption.setPosition({(float)WINDOW_WIDTH/2 - 200/2, 650});
-
-    title.setFont(font);
-    title.setCharacterSize(70);
-    title.setPosition({200, 200});
-    title.setColor(sf::Color(78, 78, 78));
-    title.setStyle(sf::Text::Bold);
-    title.setString("BOOLEAN  ALGEBRA\n     CALCULATOR");
-    
-    if (!backGroundTexture.loadFromFile("../assets/MenuBG.png"))
-        std::cout << "Failed to load texture\n";
-    backGround.setTexture(backGroundTexture);
 }
 
 MenuState::~MenuState()
 {
 }
 
-MenuState::MenuState()
-{
-}
-
 MenuState::MenuState(sf::RenderWindow* window_)
-    : State(), window(window_)
+    : State(window_)
 {
     initButtons();
+    initUI();
 }
 
 // ######################################################################## (Main Update & Render)
@@ -54,7 +54,7 @@ void MenuState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         {
             lock_click_left1 = false;
             exitFlag = GO_TO_GRAPHIC;
-            quit = true;
+            exit = true;
         }
     }
 
@@ -69,7 +69,7 @@ void MenuState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         {
             lock_click_left2 = false;
             exitFlag = GO_TO_TYPEIN;
-            quit = true;
+            exit = true;
         }
     }
 }
@@ -83,16 +83,3 @@ void MenuState::render(sf::RenderTarget* target_)
 }
 
 // ######################################################################## (Program functions)
-
-void MenuState::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
-{
-
-}
-
-void MenuState::updateMousePos(const sf::Vector2i& mousePos_)
-{
-
-}
-
-void MenuState::handleEvent(sf::Event& ev_)
-{}

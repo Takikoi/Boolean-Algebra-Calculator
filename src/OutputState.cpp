@@ -1,6 +1,6 @@
 #include "OutputState.hpp"
 
-void OutputState::initStuff()
+void OutputState::initUI()
 {
     if (!backGroundTexture.loadFromFile("../assets/OutputBG.png"))
         std::cout << "Failed to load texture\n";
@@ -8,71 +8,106 @@ void OutputState::initStuff()
 
     if (!font.loadFromFile("../fonts/Comfortaa-Medium.ttf"))
         std::cout << "Failed to load font\n";
+}
 
+void OutputState::initBoolResult()
+{
     if (rawExp.getInp().size() >= 5)
-        sopTxt_maxperline = 35;
+        expTxt_maxperline = 30;
     else 
-        sopTxt_maxperline = 45;
-    
+        expTxt_maxperline = 45;
 
 
-    simplifiedExp.initialise(rawExp.getOutput(), pow(2.0, rawExp.getInp().size()), rawExp.getInp());
-    simplifiedExp.setPrimeImp();
-	simplifiedExp.minimise();
-    simplifiedExp.displayFunctions();
-    // std::cout << "Simplified exp: " << simplifiedExp.getFunctions() << " \n";
+    //=== Input Expression
+    rawExpTxt.setFont(font);
+    rawExpTxt.setCharacterSize(26);
+    rawExpTxt.setColor(sf::Color(78, 78, 78));
+    if (rawExp.getInp().size() >= 5)
+        rawExpTxt.setPosition({WINDOW_WIDTH/2 + 50, 50});
+    else 
+        rawExpTxt.setPosition({330, 50});
+    rawExpTxt.setStyle(sf::Text::Bold);
 
+    std::string str_rawExp = "";
+    str_rawExp.append("Input: ");
+    str_rawExp.append(rawExp.getExp());
+
+    if ((float)str_rawExp.size() / expTxt_maxperline > 1)
+        for (short j = expTxt_maxperline; j < str_rawExp.size(); j += expTxt_maxperline)
+            str_rawExp.insert(j, "\n"); 
+
+    rawExpTxt.setString(str_rawExp);
+
+
+    //=== SOP expression
     sopTxt.setFont(font);
     sopTxt.setCharacterSize(26);
     sopTxt.setColor(sf::Color(78, 78, 78));
     if (rawExp.getInp().size() >= 5)
-        sopTxt.setPosition({WINDOW_WIDTH/2 + 50, 50});
+        sopTxt.setPosition({WINDOW_WIDTH/2 + 50, 150});
     else 
-        sopTxt.setPosition({330, 50});
-
+        sopTxt.setPosition({330, 150});
     sopTxt.setStyle(sf::Text::Bold);
 
     std::string str_sop = "";
     str_sop.append("SOP: ");
     str_sop.append(rawExp.getSOP());
 
-    if (str_sop.size() / sopTxt_maxperline > 1)
-        for (short i = sopTxt_maxperline; i < str_sop.size(); i += sopTxt_maxperline)
+    if ((float)str_sop.size() / expTxt_maxperline > 1)
+        for (short i = expTxt_maxperline; i < str_sop.size(); i += expTxt_maxperline)
             str_sop.insert(i, "\n");
     
     sopTxt.setString(str_sop);
 
-    simplifiedExpTxt.setFont(font);
-    simplifiedExpTxt.setCharacterSize(64);
-    simplifiedExpTxt.setColor(sf::Color(78, 78, 78));
-    simplifiedExpTxt.setPosition({100, 100});
 
+
+    //=== Simplified Expression
+    std::string str_simplifiedExp = "Simplified: ";
+    if (rawExp.getInp().size() <= 4) // only process 4 input
+    {
+        simplifiedExp.initialise(rawExp.getOutput(), pow(2.0, rawExp.getInp().size()), rawExp.getInp());
+        simplifiedExp.setPrimeImp();
+        simplifiedExp.minimise();
+        str_simplifiedExp.append(simplifiedExp.getFunctions());
+    }
+    else str_simplifiedExp.append(" This program now can only simplified expressions with MAXIMUM 4 inputs");
+    
+    simplifiedExpTxt.setFont(font);
+    simplifiedExpTxt.setCharacterSize(26);
+    simplifiedExpTxt.setColor(sf::Color(78, 78, 78));
+    simplifiedExpTxt.setStyle(sf::Text::Bold);
+    if (rawExp.getInp().size() >= 5)
+        simplifiedExpTxt.setPosition({WINDOW_WIDTH/2 + 50, WINDOW_HEIGHT/2});
+    else 
+        simplifiedExpTxt.setPosition({330, WINDOW_HEIGHT/2});
+    
+    if ((float)str_simplifiedExp.size() / expTxt_maxperline > 1)
+        for (short j = expTxt_maxperline; j < str_simplifiedExp.size(); j += expTxt_maxperline)
+            str_simplifiedExp.insert(j, "\n"); 
+
+    simplifiedExpTxt.setString(str_simplifiedExp);
+}
+
+void OutputState::initButtons()
+{
     reStartButton = Button("Restart", {200, 100}, 24, sf::Color::Black, sf::Color::White);
     reStartButton.setFont(font);
-    reStartButton.setPosition({900, 600});
-    
+    reStartButton.setPosition({WINDOW_WIDTH - 200 - 100, WINDOW_HEIGHT - 100 - 100});
 }
+
 
 OutputState::~OutputState()
 {
 }
 
-OutputState::OutputState()
-{
-}
-
 OutputState::OutputState(sf::RenderWindow* window_, const std::string& exp_)
-    : State(), window(window_), sopStr(exp_), rawExp(exp_), truthTB(rawExp.getInp(), rawExp.getTB().getBool(), rawExp.getOutput())
+    : State(window_), rawExp(exp_), truthTB(rawExp.getInp(), rawExp.getTB().getBool(), rawExp.getOutput())
 {
-    initStuff();
+    initUI();
+    initButtons();
+    if (rawExp.getInp().size() <= 5)
+        initBoolResult();
 }
-
-void OutputState::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
-{
-}
-
-void OutputState::updateMousePos(const sf::Vector2i& mousePos_)
-{}
 
 void OutputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
@@ -87,7 +122,7 @@ void OutputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         {
             lock_click_left1 = false;
             exitFlag = GO_TO_MENU;
-            quit = true;
+            exit = true;
         }
     }
 }
@@ -95,14 +130,10 @@ void OutputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 void OutputState::render(sf::RenderTarget* target_)
 {
     window->draw(backGround);
-    truthTB.render(window);
+    if (rawExp.getInp().size() <= 5)
+        truthTB.render(window);
     target_->draw(sopTxt);
+    target_->draw(rawExpTxt);
+    target_->draw(simplifiedExpTxt);
     reStartButton.render(window);
-}
-
-void OutputState::handleEvent(sf::Event& ev_)
-{}
-
-void OutputState::setExp(const std::string& exp_) {
-    sopStr = exp_;
 }

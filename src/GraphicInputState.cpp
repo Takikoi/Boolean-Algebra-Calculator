@@ -21,7 +21,7 @@ void GraphicInputState::initCells()
     }
 }
 
-void GraphicInputState::initTexture()
+void GraphicInputState::initUI()
 {
     UI_barTexture.loadFromFile("../assets/UI.png");
     UI_bar.setTexture(UI_barTexture);
@@ -31,20 +31,36 @@ void GraphicInputState::initTexture()
     goBackButton.loadTextureFromFile("../assets/ToolbarButton.png", sf::IntRect(0, 0, 76, 34));
     goBackButton.setPosition({12, 15});
 
-    goForwardButton = Button("", {76, 34}, 0, sf::Color::Transparent, sf::Color::Transparent);
-    goForwardButton.loadTextureFromFile("../assets/ToolbarButton.png", sf::IntRect(0, 34, 76, 34));
-    goForwardButton.setPosition({100, 15});
+    enterButton = Button("", {76, 34}, 0, sf::Color::Transparent, sf::Color::Transparent);
+    enterButton.loadTextureFromFile("../assets/EnterButton.png");
+    enterButton.setPosition({100, 15});
+    enterButton.getSprite().setScale(0.4, 0.5);
+
+    userManual.setFont(font);
+    userManual.setCharacterSize(24);
+    userManual.setStyle(sf::Text::Bold);
+    userManual.setPosition({WINDOW_WIDTH - 285, 40});
+    userManual.setFillColor(sf::Color(78, 78, 78));
+    std::string str_manual = "  USER MANUAL\n\n";
+    str_manual.append("- Move cursor to a \nsquare and right/left \nclick to change the \nfunctionality of it\n\n");
+    str_manual.append("- Change a number \nof square to form a \ncomplete logic circuit\n\n");
+    str_manual.append("- Press C to generate \nthe expression on the \nbar above\n\n");
+    str_manual.append("- Click ENTER on the \ntop-left to view the \nresult\n\n");
+    str_manual.append("- Enter MAXIMUM \nonly 5 inputs.\n\n");
+    str_manual.append("- At 5 inputs, \nexpression \nsimplification is \nunfortunately \nunavailable.\n");
+    userManual.setString(str_manual);
 }
 
 void GraphicInputState::initText()
 {
-    if (!font.loadFromFile("../fonts/Orbitron-Medium.ttf"))
+    if (!font.loadFromFile("../fonts/Comfortaa-Medium.ttf"))
         std::cout << "Failed to load font\n";
     
     UI_log.setFont(font);
     UI_log.setCharacterSize(24);
     UI_log.setColor(sf::Color(236, 234, 234));
     UI_log.setPosition(400, 18);
+    UI_log.setStyle(sf::Text::Bold);
     UI_log.setString("Hello there");
 }
 
@@ -61,11 +77,11 @@ GraphicInputState::~GraphicInputState()
 }
 
 GraphicInputState::GraphicInputState(sf::RenderWindow* window_) 
-    : State(), window(window_)
+    : State(window_)
 {
     // Init list will init in the order of object in class declaration not of the list
     initCells();
-    initTexture();
+    initUI();
     initText();
 
     // expression must be init after cells
@@ -76,8 +92,6 @@ GraphicInputState::GraphicInputState(sf::RenderWindow* window_)
 
 void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
-    updateInput(dtTime_, mousePos_);
-
     // Check Mouse Single-click
     for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
     {
@@ -109,12 +123,13 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
         }
     }
 
+
     static bool lock_enter = false;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && lock_enter == false)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && lock_enter == false)
     {
         lock_enter = true;
     }
-    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && lock_enter == true)
+    else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::C) && lock_enter == true)
     {
         exp = expression.getExpression();
         UI_log.setString(exp);
@@ -134,12 +149,12 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
             exitFlag = GO_TO_MENU;
             UI_log.setString("goto menu");
             exitFlag = GO_TO_MENU;
-            quit = true;
+            exit = true;
         }
     }
 
     static bool lock_goForward = false;
-    if (goForwardButton.cursorDetected(mousePos_))
+    if (enterButton.cursorDetected(mousePos_))
     {   
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goForward == false)
         {
@@ -148,7 +163,7 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goForward == true)
         {
             lock_goForward = false;
-            quit = true;
+            exit = true;
             exitFlag = GO_TO_OUTPUT;
             UI_log.setString("goto output");
         }
@@ -158,30 +173,15 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
 void GraphicInputState::render(sf::RenderTarget* target_)
 {
     for (short i = 0; i < CELL_FIELD_DIM_X; ++i)
-    {
         for (short j = 0; j < CELL_FIELD_DIM_Y; ++j)
-        {
             cells[i][j]->render(window);
-        }
-    }
+
     window->draw(UI_bar);
     window->draw(UI_log);
+    window->draw(userManual);
     goBackButton.render(window);
-    goForwardButton.render(window);
+    enterButton.render(window);
 }
 
 // ######################################################################## (Program functions)
 
-void GraphicInputState::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
-{
-    checkForQuit();
-    updateMousePos(mousePos_);
-}
-
-void GraphicInputState::updateMousePos(const sf::Vector2i& mousePos_) {
-    mousePos = mousePos_;
-}
-
-void GraphicInputState::handleEvent(sf::Event& ev_)
-{
-}

@@ -36,9 +36,7 @@ void Cell::initSprites()
     texRec.emplace(SIGNAL_IN_F, sf::IntRect(CELL_SIZE*5, CELL_SIZE*2, 64, 64));
     texRec.emplace(SIGNAL_IN_G, sf::IntRect(CELL_SIZE*6, CELL_SIZE*2, 64, 64));
 
-    texRec.emplace(SIGNAL_OUT_1, sf::IntRect(CELL_SIZE*3, 0, 64, 64));
-    texRec.emplace(SIGNAL_OUT_2, sf::IntRect(CELL_SIZE*4, 0, 64, 64));
-    texRec.emplace(SIGNAL_OUT_3, sf::IntRect(CELL_SIZE*5, 0, 64, 64));
+    texRec.emplace(SIGNAL_OUT, sf::IntRect(CELL_SIZE*3, 0, 64, 64));
 
     // Set initial type is EMPTY_CELL
     sprites.setTextureRect(texRec[EMPTY_CELL]);
@@ -95,7 +93,7 @@ bool Cell::cursorDetected(const sf::Vector2i& mousePos_)
 
 void Cell::changeToNextType()
 {
-    if (currentType == SIGNAL_OUT_3)
+    if (currentType == SIGNAL_OUT)
         currentType = EMPTY_CELL;
     else 
         currentType++;
@@ -106,7 +104,7 @@ void Cell::changeToNextType()
 void Cell::changeToPreviousType()
 {
     if (currentType == EMPTY_CELL)
-        currentType = SIGNAL_OUT_3;
+        currentType = SIGNAL_OUT;
     else 
         currentType--;
     sprites.setTextureRect(texRec[currentType]);

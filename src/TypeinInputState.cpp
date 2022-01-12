@@ -1,17 +1,12 @@
 #include "TypeinInputState.hpp"
 
-void TypeinInputState::initStuff()
+void TypeinInputState::initUI()
 {
-    if (!font.loadFromFile("../fonts/Orbitron-Medium.ttf"))
+    if (!font.loadFromFile("../fonts/Comfortaa-Medium.ttf"))
         std::cout << "Failed to load font\n";
 
     backGroundTexture.loadFromFile("../assets/TypeinBG.png");
     backGround.setTexture(backGroundTexture);
-
-    textBox = Textbox(38, sf::Color(236, 234, 234), true);
-    textBox.setFont(font);
-    textBox.setPosition({100, (float)WINDOW_HEIGHT/5 + 70});
-    textBox.setLimit(true, 45);
 
     title.setFont(font);
     title.setCharacterSize(48);
@@ -29,20 +24,33 @@ void TypeinInputState::initStuff()
     str.append("- AND gate: operator *\n");
     str.append("- NOT gate: operator '\n");
     str.append("- There must be no SPACE between charaters\n");
-    str.append("- If the expression is not complete, the program will not work\n");
-    str.append("Ex: ((A+B')*C+D')\n\n");
-    str.append("Press ENTER to proceed");
+    str.append("- If the expression is not complete, the program will crash\n");
+    str.append("- Enter MAXIMUM only 5 inputs.\n");
+    str.append("- At 5 inputs, expression simplification is unfortunately unavailable.\n");
+    str.append("\nEx: ((A+B')*C+D')\n\n");
+    str.append("Press ENTER to view result");
 
     userManual.setString(str);
+}
 
+void TypeinInputState::initButtons()
+{
     goBackButton = Button("", {76, 34}, 0, sf::Color::Transparent, sf::Color::Transparent);
     goBackButton.loadTextureFromFile("../assets/ToolbarButton.png", sf::IntRect(0, 0, 76, 34));
     goBackButton.setPosition({40, 40});
     // goBackButton.getSprite().setScale({1.5, 1.5});
 
-    enterButton = Button("", {76, 34}, 0, sf::Color::Transparent, sf::Color::Transparent);
+    enterButton = Button("", {170, 69}, 0, sf::Color::Transparent, sf::Color::Transparent);
     enterButton.loadTextureFromFile("../assets/enterButton.png");
     enterButton.setPosition({1010, 253});
+}
+
+void TypeinInputState::initTextbox()
+{
+    textBox = Textbox(38, sf::Color(236, 234, 234), true);
+    textBox.setFont(font);
+    textBox.setPosition({100, (float)WINDOW_HEIGHT/5 + 70});
+    textBox.setLimit(true, 45);
 }
 
 TypeinInputState::~TypeinInputState()
@@ -50,9 +58,11 @@ TypeinInputState::~TypeinInputState()
 }
 
 TypeinInputState::TypeinInputState(sf::RenderWindow* window_)
-    : State(), window(window_)
+    : State(window_)
 {
-    initStuff();
+    initUI();
+    initButtons();
+    initTextbox();
 }
 
 void TypeinInputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
@@ -63,7 +73,6 @@ void TypeinInputState::update(const float& dtTime_, const sf::Vector2i& mousePos
     }
 
     static bool lock_click_left1 = false;
-
     if (enterButton.cursorDetected(mousePos_))
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left1 == false)
@@ -72,7 +81,7 @@ void TypeinInputState::update(const float& dtTime_, const sf::Vector2i& mousePos
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left1 == true)
         {
-            quit = true;
+            exit = true;
             exitFlag = GO_TO_OUTPUT;
             lock_click_left1 = false;
             exp = textBox.getText();
@@ -88,10 +97,9 @@ void TypeinInputState::update(const float& dtTime_, const sf::Vector2i& mousePos
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left2 == true)
         {
-            quit = true;
+            exit = true;
             exitFlag = GO_TO_MENU;
             lock_click_left2 = false;
-            
         }
     }
 }
@@ -105,13 +113,6 @@ void TypeinInputState::render(sf::RenderTarget* target_)
     goBackButton.render(window);
     enterButton.render(window);
 }
-
-void TypeinInputState::updateInput(const float& dtTime_, const sf::Vector2i& mousePos_)
-{
-}
-
-void TypeinInputState::updateMousePos(const sf::Vector2i& mousePos_)
-{}
 
 void TypeinInputState::handleEvent(sf::Event& ev_)
 {

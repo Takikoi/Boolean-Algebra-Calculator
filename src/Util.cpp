@@ -62,29 +62,29 @@ string Util::binToString(string x, string inputName) {
 	// converts binary string to alphabetic variables
 
 	string out = "";
-	// for (int i = 0; i < x.size(); ++i) {
-	// 	if (x[i] == '1') {
-	// 		char x = inputName[i];
-	// 		out += x;
-	// 	}
-	// 	else if (x[i] == '0') {
-	// 		char x = inputName[i];
-	// 		out += x;
-	// 		out += "'";
-	// 	}
-	// }
-
 	for (int i = 0; i < x.size(); ++i) {
 		if (x[i] == '1') {
-			char x = 65 + i;
+			char x = inputName[i];
 			out += x;
 		}
 		else if (x[i] == '0') {
-			char x = 65 + i;
+			char x = inputName[i];
 			out += x;
 			out += "'";
 		}
 	}
+
+	// for (int i = 0; i < x.size(); ++i) {
+	// 	if (x[i] == '1') {
+	// 		char x = 65 + i;
+	// 		out += x;
+	// 	}
+	// 	else if (x[i] == '0') {
+	// 		char x = 65 + i;
+	// 		out += x;
+	// 		out += "'";
+	// 	}
+	// }
 	return out;
 }
 

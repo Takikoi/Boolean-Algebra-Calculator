@@ -177,12 +177,15 @@ string Tabulation::getFunctions() {
 		set<int> ::iterator itr;
 		cout << "Function " << i + 1 << ":" << endl;
 
+		int temp(0);
 		for (itr = function.begin(); itr != function.end(); ++itr) {
 			int x = *itr;
-			func += (util.binToString(primeImp[x], inputName) + " + ");
-			cout << util.binToString(primeImp[x], inputName) << " + "; 
+			temp++;
+			if (temp == (function.size()))
+				func += (util.binToString(primeImp[x], inputName));
+			else
+				func += (util.binToString(primeImp[x], inputName) + " + ");
 		}
-		cout << "\b\b  \n" << endl;
 	}
 	return func;
 }

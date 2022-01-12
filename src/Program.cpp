@@ -15,17 +15,13 @@ void Program::initWindow()
 
 void Program::initStates()
 {
-    // states.push_back(new MenuState(window));
-    // states.push_back(new TypeinInputState(window));
-    // states.push_back(new GraphicInputState(window));
-    // states.push_back(new OutputState(window));
 
     states.emplace(MENU_STATE, new MenuState(window));
     states.emplace(TYPEIN_STATE, new TypeinInputState(window));
     states.emplace(GRAPHIC_STATE, new GraphicInputState(window));
     states.emplace(OUTPUT_STATE, new OutputState(window, ""));
 
-    // iter = OUTPUT_STATE;
+    // key = OUTPUT_STATE;
 }
 
 Program::~Program() 
@@ -52,14 +48,19 @@ void Program::update()
 {
     // Get loop elapsed time
     updateDtTime();
+
     // Get input from user
     pollProgramEvent();
+
+    // Update window position
     updateWindowPos();
+
+    // Update cursor position
     updateMousePos();
 
-    if (!states[iter]->getQuit())
+    if (!states[key]->exitState())
     {
-        states[iter]->update(dtTime, mousePos);
+        states[key]->update(dtTime, mousePos);
     }
     else
     {
@@ -69,31 +70,31 @@ void Program::update()
         {
             std::string exp = "";
             delay = 0.f;
-            switch (states[iter]->getExitFlag())
+            switch (states[key]->getExitFlag())
             {
             case GO_TO_TYPEIN:
-            iter = TYPEIN_STATE;
-                delete states[iter];
-                states[iter] = new TypeinInputState(window);
+            key = TYPEIN_STATE;
+                delete states[key];
+                states[key] = new TypeinInputState(window);
                 break;
             
             case GO_TO_GRAPHIC:
-                iter = GRAPHIC_STATE;
-                delete states[iter];
-                states[iter] = new GraphicInputState(window);
+                key = GRAPHIC_STATE;
+                delete states[key];
+                states[key] = new GraphicInputState(window);
                 break;
 
             case GO_TO_OUTPUT:
-                exp = states[iter]->getExp();
-                iter = OUTPUT_STATE;
-                delete states[iter];
-                states[iter] = new OutputState(window, exp);
+                exp = states[key]->getExp();
+                key = OUTPUT_STATE;
+                delete states[key];
+                states[key] = new OutputState(window, exp);
                 break;
 
             case GO_TO_MENU:
-                iter = MENU_STATE;
-                delete states[iter];
-                states[iter] = new MenuState(window);
+                key = MENU_STATE;
+                delete states[key];
+                states[key] = new MenuState(window);
                 break;
             }
         }
@@ -106,7 +107,7 @@ void Program::render()
     window->clear(sf::Color(236, 234, 234));
 
     // Render Objects
-    states[iter]->render(window);
+    states[key]->render(window);
 
     window->display();
 }
@@ -128,7 +129,6 @@ const bool Program::running() const {
 
 void Program::pollProgramEvent()
 {
-    static bool lock_click;
     while (window->pollEvent(ev))
     {
         switch (ev.type)
@@ -138,19 +138,15 @@ void Program::pollProgramEvent()
             break;
 
         case sf::Event::TextEntered:
-            states[iter]->handleEvent(ev);
+            states[key]->handleEvent(ev);
         }
-        //graphicInputState->handleEvent(ev);
     }
 
 }
+
 void Program::updateDtTime() 
 { 
-    // get the time taken to complete 1 loop of update & render
     dtTime = dtClock.restart().asSeconds();
-    //system("cls");
-    //std::cout << "Delta Time: " << dtTime << std::endl;
-    
 }
 
 void Program::updateWindowPos() {
@@ -173,12 +169,4 @@ void Program::updateMousePos() {
     // cout << "Mouse pos: " << setw(4) << left << mousePos.x << ", " << setw(4) << left <<  mousePos.y << "____ " 
     //      << "Win pos: " << setw(4) << left << windowPos.x << ", " << setw(4) << left <<  windowPos.y << "____ " 
     //      << "Screen size: " << setw(4) << left << screenBounds.width << ", " << setw(4) << left <<  screenBounds.height << endl;
-}
-
-const sf::Vector2i& Program::getWindowPos() const {
-    return windowPos;
-}
-
-const sf::Vector2i& Program::getMousePos() const {
-    return mousePos;
 }

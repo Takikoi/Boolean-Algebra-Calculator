@@ -17,20 +17,12 @@
 class OutputState : public State
 {
 private:
-    sf::RenderWindow* window;
-
-    sf::Texture backGroundTexture;
-    sf::Sprite backGround;
-    sf::Font font;
-
-    std::string simplifiedExpStr;
     sf::Text simplifiedExpTxt;
-
-    std::string sopStr;
+    sf::Text rawExpTxt;
     sf::Text sopTxt;
-    short sopTxt_maxperline = 35;
+    short expTxt_maxperline = 35;
 
-    std::vector<sf::Text> inputGates;
+    std::vector<sf::Text> inputTxt;
 
     // Thinh's Code
     Expression rawExp;
@@ -41,26 +33,14 @@ private:
 
     Button reStartButton;
     
-    void initStuff();
-    
-protected:
-    
-    // std::vector<sf::Texture> textures;
-    // sf::Vector2i mousePos;
-    // bool quit;
-
+    void initUI();
+    void initBoolResult();
+    void initButtons();
 public:
-    OutputState();
     OutputState(sf::RenderWindow* window_, const std::string& exp_);
     ~OutputState();
 
-    void updateInput(const float& dtTime_, const sf::Vector2i& mousePos_);
-    void updateMousePos(const sf::Vector2i& mousePos_);
-
     void update(const float& dtTime_, const sf::Vector2i& mousePos_);
     void render(sf::RenderTarget* target_ = NULL);
-
-    void handleEvent(sf::Event& ev_);
-    void setExp(const std::string& exp_);
 };
 

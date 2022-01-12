@@ -36,9 +36,7 @@ enum CellType : unsigned char
     SIGNAL_IN_F,
     SIGNAL_IN_G,
 
-    SIGNAL_OUT_1,
-    SIGNAL_OUT_2,
-    SIGNAL_OUT_3
+    SIGNAL_OUT,
 };
 
 enum ExitFlag : unsigned char

@@ -4,20 +4,13 @@ State::~State()
 {
 }
 
-State::State()
+State::State(sf::RenderWindow* window_)
+    : window(window_)
 {
 }
 
-void State::checkForQuit()
-{    
-}
-
-const bool& State::getQuit() const {
-    return quit;
-}
-
-void State::updateMousePos()
-{
+const bool& State::exitState() const {
+    return exit;
 }
 
 const unsigned char& State::getExitFlag() const {

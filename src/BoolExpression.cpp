@@ -29,7 +29,7 @@ sf::Vector2i BoolExpression::getOutputCellPosition()
     sf::Vector2i pos(0, 0);
     for (pos.x = CELL_FIELD_DIM_X - 1; pos.x >= 0; --pos.x)
         for (pos.y = 0; pos.y < CELL_FIELD_DIM_Y; ++pos.y)
-            if (cells[pos.x][pos.y]->getCurrentType() == SIGNAL_OUT_1)
+            if (cells[pos.x][pos.y]->getCurrentType() == SIGNAL_OUT)
             {
                 return pos;
             }
@@ -67,7 +67,7 @@ void BoolExpression::check_ValidNeighboringCells()
                 case AND_GATE:
                     if (i != 0 || j != 0 || i != (CELL_FIELD_DIM_X - 1) || j != (CELL_FIELD_DIM_Y - 1))
                     {   
-                        if ((right == SIGNAL_OUT_1 
+                        if ((right == SIGNAL_OUT 
                         ||   right == WIRE_VERTICAL 
                         ||   right == NOT_GATE 
                         ||   right == WIRE_CORNER_LEFT
@@ -83,7 +83,7 @@ void BoolExpression::check_ValidNeighboringCells()
                 case WIRE_VERTICAL:
                     if (i != 0 || i != (CELL_FIELD_DIM_X - 1))
                     {
-                        if ((right == SIGNAL_OUT_1 
+                        if ((right == SIGNAL_OUT 
                         ||   right == WIRE_VERTICAL 
                         ||   right == NOT_GATE 
                         ||   right == WIRE_CORNER_LEFT
@@ -192,7 +192,7 @@ void BoolExpression::check_ValidNeighboringCells()
                 case SIGNAL_IN_G:
                     if (i != (CELL_FIELD_DIM_X - 1))
                     {
-                        if ((right == SIGNAL_OUT_1 
+                        if ((right == SIGNAL_OUT 
                         ||   right == WIRE_VERTICAL 
                         ||   right == NOT_GATE 
                         ||   right == WIRE_CORNER_LEFT
@@ -201,7 +201,7 @@ void BoolExpression::check_ValidNeighboringCells()
                     }
                     break;
                 
-                case SIGNAL_OUT_1:
+                case SIGNAL_OUT:
                     if (i != 0)
                     {
                         if  (left == SIGNAL_IN_A 
