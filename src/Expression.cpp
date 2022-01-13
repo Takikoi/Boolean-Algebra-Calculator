@@ -59,8 +59,8 @@ string Expression::processInp() { // failed here
 }
 
 Expression::~Expression() {
-	// delete[] output;
-	// output = NULL;
+	delete[] output;
+	output = NULL;
 }
 
 string Expression::getExp() const {
@@ -229,14 +229,13 @@ void Expression::processSOP() {
 		i[a] = 0;
 	}
 	int MAX = 2;
-
 	int count = 0;
 	int p = 0;
 	while (i[n] == 0) {
 		//do stuff here
 		if (output[count]) {
 			for (int j = 0; j < n; ++j) {
-				if (i[n-j-1] == 1) {
+				if (i[n - j - 1] == 1) {
 					SOP.push_back(input[j]);
 				}
 				else {
@@ -244,24 +243,26 @@ void Expression::processSOP() {
 					SOP.push_back('\'');
 				}
 			}
-			if (count < (int)pow(2, input.length())-1) {
-				SOP.push_back('+');
-			}
+			SOP.push_back('+');
 		}
 		count++;
-
 		//end do stuff
 		i[0]++;
 		while (i[p] == MAX) {
 			i[p] = 0;
 			i[++p]++;
+
 			if (i[p] != MAX)
 				p = 0;
 		}
 	}
+	if(SOP.length()>0){
+		SOP.pop_back();
+	}
 	delete[] i;
 	i = NULL;
 }
+
 
 string Expression::getSOP() const {
 	return SOP;

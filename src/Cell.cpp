@@ -11,7 +11,7 @@ void Cell::initTexture()
     if (!textureSheet.loadFromFile("../assets/Boolean Assets ver2.png"))
         std::cout << "[ERROR] : Failed to load texture.";
 
-        sprites.setTexture(textureSheet);
+    sprites.setTexture(textureSheet);
 
     texRec.emplace(EMPTY_CELL, sf::IntRect(CELL_SIZE*6, 0, 64, 64));
 
