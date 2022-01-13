@@ -70,7 +70,7 @@ void OutputState::initBoolResult()
         simplifiedExp.minimise();
         str_simplifiedExp.append(simplifiedExp.getFunctions());
     }
-    else str_simplifiedExp.append(" This program now can only simplified expressions with MAXIMUM 4 inputs");
+    else str_simplifiedExp.append(" This program now can only simplify expressions with MAXIMUM 4 inputs");
     
     simplifiedExpTxt.setFont(font);
     simplifiedExpTxt.setCharacterSize(26);
