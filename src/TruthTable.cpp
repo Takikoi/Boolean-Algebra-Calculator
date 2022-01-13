@@ -1,14 +1,7 @@
 #include "TruthTable.hpp"
 
-void TruthTable::initStuff()
+void TruthTable::initBoolCell()
 {
-    posTBVal = sf::Vector2f(50.f, 100.f);
-    posTBOrigin = sf::Vector2f(50.f, 50.f);
-    boolCellSize = sf::Vector2f(45.f, 45.f);
-
-    if (!font.loadFromFile("../fonts/Comfortaa-Medium.ttf"))
-        std::cout << "Failed to load font\n";
-    
     float x_tmp(posTBOrigin.x);
     for (char& chr : exp)
     {
@@ -63,31 +56,26 @@ void TruthTable::initStuff()
     }
 }
 
-TruthTable::~TruthTable()
+void TruthTable::initVariables()
 {
+    posTBVal = sf::Vector2f(50.f, 100.f);
+    posTBOrigin = sf::Vector2f(50.f, 50.f);
+    boolCellSize = sf::Vector2f(45.f, 45.f);
+
+    if (!font.loadFromFile("../fonts/Comfortaa-Medium.ttf"))
+        std::cout << "Failed to load font\n";
 }
 
-TruthTable::TruthTable()
+TruthTable::~TruthTable()
 {
-    std::string str_ = "AB";
-    bool** truthTBVal_;
-    exp = str_;
-    truthTBValue = truthTBVal_;
-    numCol = str_.size();
-    numRow = pow(numCol, 2.0);
-    // initStuff();
 }
 
 TruthTable::TruthTable(const std::string& str_, bool** entry_, bool* output_)
     : exp(str_), truthTBValue(entry_), numCol(str_.size()), numRow(pow(2.0, numCol)), truthTBOuput(output_)
 {
+    initVariables();
     if (numCol <= 5)
-        initStuff();
-}
-
-void TruthTable::generateTruthTB()
-{
-
+        initBoolCell();
 }
 
 void TruthTable::render(sf::RenderTarget* target_)

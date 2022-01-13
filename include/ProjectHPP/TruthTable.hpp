@@ -26,16 +26,13 @@ private:
 
     int gap = 15; // gap between 2 tables
     
-public:
-    void initStuff();
+    void initVariables();
+    void initBoolCell();
 
-    TruthTable();
+public:
     TruthTable(const std::string& str_, bool** entry_ = nullptr, bool* output_ = nullptr);
     ~TruthTable();
 
-    void generateTruthTB();
     void render(sf::RenderTarget* target_);
-
-
 };
 

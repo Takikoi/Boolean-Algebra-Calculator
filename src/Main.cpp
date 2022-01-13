@@ -2,6 +2,10 @@
 
 int main()
 {
+    // Hide terminal
+    HWND hWnd = GetConsoleWindow();
+    ShowWindow(hWnd, SW_HIDE);
+
     Program program;
 
     while (program.running())

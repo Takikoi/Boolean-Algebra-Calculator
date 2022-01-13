@@ -11,7 +11,7 @@ void BoolExpression::check_ValidNeighboringCells()
                 {
                 case OR_GATE:
                 case AND_GATE:
-                    if (cells[i][++j]->getCurrentType() == SIGNAL_OUT_1 
+                    if (cells[i][++j]->getCurrentType() == SIGNAL_OUT 
                     ||  cells[i][++j]->getCurrentType() == WIRE_VERTICAL 
                     ||  cells[i][++j]->getCurrentType() == NOT_GATE 
                     ||  cells[i][++j]->getCurrentType() == WIRE_CORNER_LEFT

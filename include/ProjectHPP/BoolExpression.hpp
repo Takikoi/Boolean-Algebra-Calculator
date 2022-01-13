@@ -17,7 +17,6 @@ public:
     BoolExpression(Cell*** cells_);
     ~BoolExpression();
 
-    
     std::string getExpression();
 
     sf::Vector2i getOutputCellPosition();

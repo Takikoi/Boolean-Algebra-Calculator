@@ -3,7 +3,7 @@
 BoolExpression::~BoolExpression()
 {
     // do not delete cells here
-    std::cout << "BoolExp deleted\n";
+    // std::cout << "BoolExp deleted\n";
 }
 
 BoolExpression::BoolExpression()
@@ -20,7 +20,7 @@ std::string BoolExpression::getExpression()
 {
     sf::Vector2i outputPos = getOutputCellPosition();
     check_ValidNeighboringCells();
-    std::cout << "Valid? : " << valid << "\n";
+    // std::cout << "Valid? : " << valid << "\n";
     return generateExpression(outputPos.x - 1, outputPos.y);
 }
 
@@ -44,7 +44,7 @@ void BoolExpression::check_ValidNeighboringCells()
         {
             if (cells[i][j]->getCurrentType() != EMPTY_CELL)
             {    
-                std::cout << i << ", " << j << "\n";
+                // std::cout << i << ", " << j << "\n";
 
                 valid = false;
                 
@@ -95,8 +95,6 @@ void BoolExpression::check_ValidNeighboringCells()
                         ||   left == SIGNAL_IN_C
                         ||   left == SIGNAL_IN_D
                         ||   left == SIGNAL_IN_E
-                        ||   left == SIGNAL_IN_F 
-                        ||   left == SIGNAL_IN_G
                         ||   left == OR_GATE
                         ||   left == AND_GATE
                         ||   left == NOT_GATE
@@ -145,8 +143,6 @@ void BoolExpression::check_ValidNeighboringCells()
                         ||   left == SIGNAL_IN_C
                         ||   left == SIGNAL_IN_D
                         ||   left == SIGNAL_IN_E
-                        ||   left == SIGNAL_IN_F 
-                        ||   left == SIGNAL_IN_G
                         ||   left == OR_GATE
                         ||   left == AND_GATE
                         ||   left == NOT_GATE
@@ -168,8 +164,6 @@ void BoolExpression::check_ValidNeighboringCells()
                         ||   left == SIGNAL_IN_C
                         ||   left == SIGNAL_IN_D
                         ||   left == SIGNAL_IN_E
-                        ||   left == SIGNAL_IN_F 
-                        ||   left == SIGNAL_IN_G
                         ||   left == OR_GATE
                         ||   left == AND_GATE
                         ||   left == NOT_GATE
@@ -188,8 +182,6 @@ void BoolExpression::check_ValidNeighboringCells()
                 case SIGNAL_IN_C:
                 case SIGNAL_IN_D:
                 case SIGNAL_IN_E:
-                case SIGNAL_IN_F:
-                case SIGNAL_IN_G:
                     if (i != (CELL_FIELD_DIM_X - 1))
                     {
                         if ((right == SIGNAL_OUT 
@@ -209,8 +201,6 @@ void BoolExpression::check_ValidNeighboringCells()
                         ||   left == SIGNAL_IN_C
                         ||   left == SIGNAL_IN_D
                         ||   left == SIGNAL_IN_E
-                        ||   left == SIGNAL_IN_F 
-                        ||   left == SIGNAL_IN_G
                         ||   left == OR_GATE
                         ||   left == AND_GATE
                         ||   left == NOT_GATE
@@ -286,14 +276,6 @@ std::string BoolExpression::generateExpression(short x_, short y_, bool checkUpw
                 result = "E";
                 break;
             
-            case SIGNAL_IN_F:
-                result = "F";
-                break;
-
-            case SIGNAL_IN_G:
-                result = "G";
-                break;
-
             case EMPTY_CELL:
                 valid = false;
                 break;
@@ -302,7 +284,7 @@ std::string BoolExpression::generateExpression(short x_, short y_, bool checkUpw
         }
         else 
         {
-            std::cout << "Invalid circuit\n";
+            // std::cout << "Invalid circuit\n";
             return  "Invalid circuit";
         }
     }

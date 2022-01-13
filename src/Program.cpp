@@ -46,6 +46,7 @@ Program::Program()
 
 void Program::update()
 {
+
     // Get loop elapsed time
     updateDtTime();
 

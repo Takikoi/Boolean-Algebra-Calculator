@@ -10,7 +10,6 @@ class GraphicInputState : public State
 private:
     // Cells field
     Cell*** cells;
-    Cell testCell;
 
     BoolExpression expression;
 

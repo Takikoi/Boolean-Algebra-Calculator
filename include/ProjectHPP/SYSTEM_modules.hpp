@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <stack>
+#include <windows.h>
 
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
@@ -33,8 +34,6 @@ enum CellType : unsigned char
     SIGNAL_IN_C,
     SIGNAL_IN_D,
     SIGNAL_IN_E,
-    SIGNAL_IN_F,
-    SIGNAL_IN_G,
 
     SIGNAL_OUT,
 };

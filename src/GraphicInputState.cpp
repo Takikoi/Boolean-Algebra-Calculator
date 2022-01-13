@@ -46,6 +46,7 @@ void GraphicInputState::initUI()
     str_manual.append("- Change a number \nof square to form a \ncomplete logic circuit\n\n");
     str_manual.append("- Press C to generate \nthe expression on the \nbar above\n\n");
     str_manual.append("- Click ENTER on the \ntop-left to view the \nresult\n\n");
+    str_manual.append("- Create only \n1 Ouput cell\n\n");
     str_manual.append("- Enter MAXIMUM \nonly 5 inputs.\n\n");
     str_manual.append("- At 5 inputs, \nexpression \nsimplification is \nunfortunately \nunavailable.\n");
     userManual.setString(str_manual);
