@@ -26,6 +26,7 @@ private:
 
     // Thinh's Code
     Expression rawExp;
+    
     TruthTable truthTB; // truthTb must be init after expression
 
     // Long's code

@@ -67,11 +67,6 @@ TypeinInputState::TypeinInputState(sf::RenderWindow* window_)
 
 void TypeinInputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-    {
-        std::cout << textBox.getText();
-    }
-
     static bool lock_click_left1 = false;
     if (enterButton.cursorDetected(mousePos_))
     {
@@ -81,6 +76,7 @@ void TypeinInputState::update(const float& dtTime_, const sf::Vector2i& mousePos
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left1 == true)
         {
+            // When left click is released
             exit = true;
             exitFlag = GO_TO_OUTPUT;
             lock_click_left1 = false;
@@ -97,6 +93,7 @@ void TypeinInputState::update(const float& dtTime_, const sf::Vector2i& mousePos
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left2 == true)
         {
+            // When left click is released
             exit = true;
             exitFlag = GO_TO_MENU;
             lock_click_left2 = false;
@@ -116,5 +113,6 @@ void TypeinInputState::render(sf::RenderTarget* target_)
 
 void TypeinInputState::handleEvent(sf::Event& ev_)
 {
+    // When receive a text type in action from user
     textBox.typedOn(ev_);
 }

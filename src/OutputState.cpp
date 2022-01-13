@@ -12,13 +12,14 @@ void OutputState::initUI()
 
 void OutputState::initBoolResult()
 {
+    // Change the max character per line according to how many inputs
     if (rawExp.getInp().size() >= 5)
         expTxt_maxperline = 30;
     else 
         expTxt_maxperline = 45;
 
 
-    //=== Input Expression
+//=== Input Expression
     rawExpTxt.setFont(font);
     rawExpTxt.setCharacterSize(26);
     rawExpTxt.setColor(sf::Color(78, 78, 78));
@@ -32,6 +33,7 @@ void OutputState::initBoolResult()
     str_rawExp.append("Input: ");
     str_rawExp.append(rawExp.getExp());
 
+    // End line whenever the text reaches maxperline
     if ((float)str_rawExp.size() / expTxt_maxperline > 1)
         for (short j = expTxt_maxperline; j < str_rawExp.size(); j += expTxt_maxperline)
             str_rawExp.insert(j, "\n"); 
@@ -39,7 +41,7 @@ void OutputState::initBoolResult()
     rawExpTxt.setString(str_rawExp);
 
 
-    //=== SOP expression
+//=== SOP expression
     sopTxt.setFont(font);
     sopTxt.setCharacterSize(26);
     sopTxt.setColor(sf::Color(78, 78, 78));
@@ -53,6 +55,7 @@ void OutputState::initBoolResult()
     str_sop.append("SOP: ");
     str_sop.append(rawExp.getSOP());
 
+    // End line whenever the text reaches maxperline
     if ((float)str_sop.size() / expTxt_maxperline > 1)
         for (short i = expTxt_maxperline; i < str_sop.size(); i += expTxt_maxperline)
             str_sop.insert(i, "\n");
@@ -61,7 +64,7 @@ void OutputState::initBoolResult()
 
 
 
-    //=== Simplified Expression
+//=== Simplified Expression
     std::string str_simplifiedExp = "Simplified: ";
     if (rawExp.getInp().size() <= 4) // only process 4 input
     {
@@ -81,6 +84,7 @@ void OutputState::initBoolResult()
     else 
         simplifiedExpTxt.setPosition({330, WINDOW_HEIGHT/2});
     
+    // End line whenever the text reaches maxperline
     if ((float)str_simplifiedExp.size() / expTxt_maxperline > 1)
         for (short j = expTxt_maxperline; j < str_simplifiedExp.size(); j += expTxt_maxperline)
             str_simplifiedExp.insert(j, "\n"); 
@@ -120,6 +124,7 @@ void OutputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left1 == true)
         {
+            // When left click is released
             lock_click_left1 = false;
             exitFlag = GO_TO_MENU;
             exit = true;
@@ -130,7 +135,7 @@ void OutputState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
 void OutputState::render(sf::RenderTarget* target_)
 {
     window->draw(backGround);
-    if (rawExp.getInp().size() <= 5)
+    if (rawExp.getInp().size() <= 5) // only render max 5 input
         truthTB.render(window);
     target_->draw(sopTxt);
     target_->draw(rawExpTxt);

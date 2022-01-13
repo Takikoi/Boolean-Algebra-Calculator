@@ -52,6 +52,7 @@ void MenuState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left1 == true)
         {
+            // When left click is released
             lock_click_left1 = false;
             exitFlag = GO_TO_GRAPHIC;
             exit = true;
@@ -67,6 +68,7 @@ void MenuState::update(const float& dtTime_, const sf::Vector2i& mousePos_)
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left2 == true)
         {
+            // When left click is released
             lock_click_left2 = false;
             exitFlag = GO_TO_TYPEIN;
             exit = true;

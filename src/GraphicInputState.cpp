@@ -108,6 +108,7 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
                 }
                 else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_click_left == true)
                 {
+                    // When left click is released
                     lock_click_left = false;
                     cells[i][j]->changeToNextType();
                 }
@@ -117,6 +118,7 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
                 }
                 else if (!sf::Mouse::isButtonPressed(sf::Mouse::Right) && lock_click_right == true)
                 {
+                    // When right click is released
                     lock_click_right = false;
                     cells[i][j]->changeToPreviousType();
                 }
@@ -132,6 +134,7 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
     }
     else if (!sf::Keyboard::isKeyPressed(sf::Keyboard::C) && lock_enter == true)
     {
+        // When C is released
         exp = expression.getExpression();
         UI_log.setString(exp);
         lock_enter = false;
@@ -146,6 +149,7 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goBack == true)
         {
+            // When left click is released
             lock_goBack = false;
             exitFlag = GO_TO_MENU;
             UI_log.setString("goto menu");
@@ -163,6 +167,7 @@ void GraphicInputState::update(const float& dtTime_, const sf::Vector2i& mousePo
         }
         else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && lock_goForward == true)
         {
+            // When left click is released
             lock_goForward = false;
             exit = true;
             exitFlag = GO_TO_OUTPUT;
@@ -184,5 +189,4 @@ void GraphicInputState::render(sf::RenderTarget* target_)
     enterButton.render(window);
 }
 
-// ######################################################################## (Program functions)
 

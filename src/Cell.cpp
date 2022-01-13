@@ -70,6 +70,7 @@ void Cell::render(sf::RenderTarget* target_)
 
 bool Cell::cursorDetected(const sf::Vector2i& mousePos_)
 {
+    // when ti cursor is in the bounding box region
     if ((float)mousePos_.x > boundingBox.getPosition().x && (float)mousePos_.x < (boundingBox.getPosition().x + boundingBox.getSize().x)
      && (float)mousePos_.y > boundingBox.getPosition().y && (float)mousePos_.y < (boundingBox.getPosition().y + boundingBox.getSize().y))
     {
@@ -85,7 +86,7 @@ void Cell::changeToNextType()
     else 
         currentType++;
     sprites.setTextureRect(texRec[currentType]);
-    std::cout << currentType << std::endl;
+    // std::cout << currentType << std::endl;
 }
 
 void Cell::changeToPreviousType()
@@ -95,7 +96,7 @@ void Cell::changeToPreviousType()
     else 
         currentType--;
     sprites.setTextureRect(texRec[currentType]);
-    std::cout << currentType << std::endl;
+    // std::cout << currentType << std::endl;
 }
 
 const unsigned char& Cell::getCurrentType() const {

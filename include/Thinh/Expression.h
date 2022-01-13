@@ -1,9 +1,6 @@
 #ifndef EXPRESSION_HPP
 #define EXPRESSION_HPP
 
-// #include "SYSTEM_modules.hpp"
-// #include "TruthTableBool.h" 
-
 using namespace std;
 
 class Expression {
