@@ -16,5 +16,9 @@ Folders:
 - lib:        all SFML library files
 - src:        all `.cpp` files
 
+### Features
+- Use Type-in to manually type in your boolean equation.
+- Use Graphic to construct the boolean equation by fundamental blocks and connections.
+The program can then simplify the equation in the form of sum of product (SOP).
 ![alt text](image.png "Title")
-![alt text](image (1).png "Title")
+![alt text](image(1).png "Title")
