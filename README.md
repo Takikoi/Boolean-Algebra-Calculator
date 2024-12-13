@@ -1,5 +1,6 @@
 # Boolean-Algebra-Calculator
 
+## Instructions
 Access the BoolCalculator.exe in the build folder to run the program
 
 PLEASE DO NOT MOVE FILE LOCATIONS or the program cannot find its resource directories and crashes
@@ -13,3 +14,4 @@ font:       all font .ttf (true type font) files
 include:    all header files including SFML headers
 lib:        all SFML library files
 src:        all .cpp files
+
